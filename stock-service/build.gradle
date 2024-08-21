@@ -30,7 +30,7 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

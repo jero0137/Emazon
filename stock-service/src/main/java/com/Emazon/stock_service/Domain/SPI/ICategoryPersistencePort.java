@@ -5,7 +5,7 @@ import com.Emazon.stock_service.Domain.Model.Category;
 import java.util.List;
 
 public interface ICategoryPersistencePort {
-    Category saveCategory(Category category);
+    void saveCategory(Category category);
     Category getCategory(Long id);
     List<Category> getAllCategories();
     void updateCategory(Category category);

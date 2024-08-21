@@ -1,4 +1,4 @@
-package com.Emazon.stock_service.Infrastructure.Controller;
+package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.CategoryDto;
 import com.Emazon.stock_service.Application.Handler.ICategoryHandler;
