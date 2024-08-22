@@ -7,12 +7,12 @@ spring:
     username: root
     password: 1234
 
-jpa:
-  hibernate:
-    ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: update
 
-data:
-  mongodb:
-    host: localhost
-    port: 27017
-    database: stock
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: stock

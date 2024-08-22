@@ -15,8 +15,8 @@ import java.util.List;
 @Transactional
 public class CategoryHandler implements ICategoryHandler {
 
-    ICategoryServicePort categoryServicePort;
-    CategoryDtoMapper categoryDtoMapper;
+    private final ICategoryServicePort categoryServicePort;
+    private final CategoryDtoMapper categoryDtoMapper;
 
     @Override
     public void saveCategoryDto(CategoryDto categoryDto) {
