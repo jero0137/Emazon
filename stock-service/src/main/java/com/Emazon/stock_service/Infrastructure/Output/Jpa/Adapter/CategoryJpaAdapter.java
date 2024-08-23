@@ -2,7 +2,7 @@ package com.Emazon.stock_service.Infrastructure.Output.Jpa.Adapter;
 
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
-import com.Emazon.stock_service.Infrastructure.Exception.CategoryAlreadyExistException;
+import com.Emazon.stock_service.Infrastructure.Exception.CategoryAlreadyExistsException;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Exception.NoDataFoundException;
 import com.Emazon.stock_service.Infrastructure.Output.Jpa.Entity.CategoryEntity;
@@ -21,7 +21,7 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     @Override
     public void saveCategory(Category category) {
         if(categoryRepository.findByName(category.getName()).isPresent()){
-            throw new CategoryAlreadyExistException();
+            throw new CategoryAlreadyExistsException();
         }
         categoryRepository.save(categoryEntityMapper.toCategoryEntity(category));
     }

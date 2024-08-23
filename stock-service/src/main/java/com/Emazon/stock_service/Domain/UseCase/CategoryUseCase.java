@@ -1,9 +1,8 @@
 package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
-import com.Emazon.stock_service.Domain.Exception.CategoryDescriptionIsEmptyException;
-import com.Emazon.stock_service.Domain.Exception.CategoryNameExceedsMaxLengthException;
-import com.Emazon.stock_service.Domain.Exception.CategoryNameIsEmptyException;
+import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 
@@ -23,17 +22,17 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Category saveCategory(Category category) {
-        if(category.getDescription().isEmpty()){
-            throw new CategoryDescriptionIsEmptyException();
+        if(category.getDescription().isEmpty() || category.getDescription() == null){
+            throw new MissingAttributeException("The category mush have a description");
         }
-        if(category.getName().isEmpty()){
-            throw new CategoryNameIsEmptyException();
+        if(category.getName().isEmpty() || category.getName() == null){
+            throw new MissingAttributeException("The category mush have a name");
         }
         if(category.getName().length() > MAX_NAME_LENGTH){
-            throw new CategoryNameExceedsMaxLengthException(MAX_NAME_LENGTH);
+            throw new InvalidLengthException("Category name must have maximum "+MAX_NAME_LENGTH + "characters");
         }
         if(category.getDescription().length() > MAX_DESCRIPTION_LENGTH){
-            throw new CategoryNameExceedsMaxLengthException(MAX_DESCRIPTION_LENGTH);
+            throw new InvalidLengthException("Category description must have maximum "+MAX_DESCRIPTION_LENGTH + "characters");
         }
         this.iCategoryPersistencePort.saveCategory(category);
         return category;
