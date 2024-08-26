@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.websocket.server.ServerEndpoint;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +41,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Categories not found")
     })
     @GetMapping("/")
-    public List<CategoryDto> getAllCategories() {
-        return categoryHandler.getAllCategoriesDto();
+    public List<CategoryDto> getCategories(@RequestParam int page, @RequestParam int size, @RequestParam Sort.Direction direction) {
+        return categoryHandler.getCategoriesDto(page, size, direction );
     }
 
     @Operation(summary = "Get a category by ID")

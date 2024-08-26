@@ -4,8 +4,10 @@ import com.Emazon.stock_service.Application.Dto.CategoryDto;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.Pagination;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +45,12 @@ public class CategoryHandler implements ICategoryHandler {
     @Override
     public void deleteCategoryDto(Long id) {
         categoryServicePort.deleteCategory(id);
+    }
+
+    @Override
+    public List<CategoryDto> getCategoriesDto(int page, int size, Sort.Direction direction) {
+        Pagination pagination = new Pagination(page, size, "name", direction);
+        List<Category> categories = categoryServicePort.getCategories(pagination);
+        return categoryDtoMapper.toCategoriesDto(categories);
     }
 }

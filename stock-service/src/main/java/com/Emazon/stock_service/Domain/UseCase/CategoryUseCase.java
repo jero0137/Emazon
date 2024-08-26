@@ -4,6 +4,7 @@ import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 
 
@@ -23,10 +24,10 @@ public class CategoryUseCase implements ICategoryServicePort {
     @Override
     public Category saveCategory(Category category) {
         if(category.getDescription().isEmpty() || category.getDescription() == null){
-            throw new MissingAttributeException("The category mush have a description");
+            throw new MissingAttributeException("The category must have a description");
         }
         if(category.getName().isEmpty() || category.getName() == null){
-            throw new MissingAttributeException("The category mush have a name");
+            throw new MissingAttributeException("The category must have a name");
         }
         if(category.getName().length() > MAX_NAME_LENGTH){
             throw new InvalidLengthException("Category name must have maximum "+MAX_NAME_LENGTH + "characters");
@@ -55,6 +56,11 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public void deleteCategory(Long id) {
-        this.iCategoryPersistencePort.deleteCategory(id);
+        this.iCategoryPersistencePort.deleteCategoryById(id);
+    }
+
+    @Override
+    public List<Category> getCategories(Pagination pagination) {
+        return iCategoryPersistencePort.getCategories(pagination);
     }
 }
