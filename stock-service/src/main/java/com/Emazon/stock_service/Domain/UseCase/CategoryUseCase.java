@@ -8,6 +8,7 @@ import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryUseCase implements ICategoryServicePort {
@@ -23,11 +24,16 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Category saveCategory(Category category) {
+        List<String> missingAttributes = new ArrayList<>();
+
         if(category.getDescription().isEmpty() || category.getDescription() == null){
-            throw new MissingAttributeException("The category must have a description");
+            missingAttributes.add("The category must have a description");
         }
         if(category.getName().isEmpty() || category.getName() == null){
-            throw new MissingAttributeException("The category must have a name");
+            missingAttributes.add("The category must have a name");
+        }
+        if(!missingAttributes.isEmpty()){
+            throw new MissingAttributeException(missingAttributes.toString());
         }
         if(category.getName().length() > MAX_NAME_LENGTH){
             throw new InvalidLengthException("Category name must have maximum "+MAX_NAME_LENGTH + "characters");

@@ -25,24 +25,32 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_ALREADY_EXISTS.getMessage()));
     }
 
-    @ExceptionHandler(MissingAttributeException.class)
-    public ResponseEntity<Map<String, String>> handleMissingAttributeException(
-            MissingAttributeException missingAttributeException) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Collections.singletonMap(MESSAGE, missingAttributeException.getMessage()));
-    }
-
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCategoryNotFoundException(
             CategoryNotFoundException categoryNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Collections.singletonMap(MESSAGE, categoryNotFoundException.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_NOT_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(PageOutOfBoundsException.class)
+    public ResponseEntity<Map<String, String>> handlePageOutOfBoundsException(
+            PageOutOfBoundsException pageOutOfBoundsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PAGE_OUT_OF_BOUNDS.getMessage()));
     }
 
     @ExceptionHandler(NoDataFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoDataFoundException(
             NoDataFoundException missingAttributeException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
+    }
+
+
+    @ExceptionHandler(MissingAttributeException.class)
+    public ResponseEntity<Map<String, String>> handleMissingAttributeException(
+            MissingAttributeException missingAttributeException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(MESSAGE, missingAttributeException.getMessage()));
     }
 
@@ -53,10 +61,5 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, invalidLengthException.getMessage()));
     }
 
-    @ExceptionHandler(PageOutOfBoundsException.class)
-    public ResponseEntity<Map<String, String>> handlePageOutOfBoundsException(
-            PageOutOfBoundsException pageOutOfBoundsException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, pageOutOfBoundsException.getMessage()));
-    }
+
 }

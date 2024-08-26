@@ -4,6 +4,6 @@ public class InvalidLengthException extends RuntimeException{
     String message;
 
     public InvalidLengthException(String m) {
-        message = m;
+        super(m);
     }
 }

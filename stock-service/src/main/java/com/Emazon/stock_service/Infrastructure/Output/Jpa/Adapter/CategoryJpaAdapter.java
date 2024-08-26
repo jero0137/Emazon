@@ -70,7 +70,7 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         );
         Page<CategoryEntity> page = categoryRepository.findAll(pageRequest);
         if(pagination.getPage() >= page.getTotalPages()){
-            throw new PageOutOfBoundsException("Page number is out of bounds");
+            throw new PageOutOfBoundsException();
         }
         List<CategoryEntity> categoryEntities = page.getContent();
 
