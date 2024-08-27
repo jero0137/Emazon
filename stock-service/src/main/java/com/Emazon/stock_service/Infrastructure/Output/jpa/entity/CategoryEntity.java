@@ -1,4 +1,4 @@
-package com.Emazon.stock_service.Infrastructure.Output.Jpa.Entity;
+package com.Emazon.stock_service.Infrastructure.Output.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

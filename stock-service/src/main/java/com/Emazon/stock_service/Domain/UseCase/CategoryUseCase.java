@@ -4,6 +4,7 @@ import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 
@@ -66,7 +67,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public List<Category> getCategories(Pagination pagination) {
+    public PageCustom<Category> getCategories(Pagination pagination) {
         return iCategoryPersistencePort.getCategories(pagination);
     }
 }

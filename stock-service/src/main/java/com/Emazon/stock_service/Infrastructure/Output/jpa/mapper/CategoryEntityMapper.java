@@ -1,7 +1,7 @@
-package com.Emazon.stock_service.Infrastructure.Output.Jpa.Mapper;
+package com.Emazon.stock_service.Infrastructure.Output.jpa.mapper;
 
 import com.Emazon.stock_service.Domain.Model.Category;
-import com.Emazon.stock_service.Infrastructure.Output.Jpa.Entity.CategoryEntity;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;

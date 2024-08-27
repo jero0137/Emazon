@@ -1,6 +1,7 @@
 package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.CategoryDto;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -11,5 +12,5 @@ public interface ICategoryHandler {
     List<CategoryDto> getAllCategoriesDto();
     void updateCategoryDto(CategoryDto categoryDto);
     void deleteCategoryDto(Long id);
-    List<CategoryDto> getCategoriesDto(int page, int size, Sort.Direction direction);
+    PageCustom<CategoryDto> getCategoriesDto(int page, int size, Sort.Direction direction);
 }

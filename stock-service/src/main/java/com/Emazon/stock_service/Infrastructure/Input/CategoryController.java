@@ -2,19 +2,15 @@ package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.CategoryDto;
 import com.Emazon.stock_service.Application.Handler.ICategoryHandler;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.websocket.server.ServerEndpoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -41,7 +37,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Categories not found")
     })
     @GetMapping("/")
-    public List<CategoryDto> getCategories(@RequestParam int page, @RequestParam int size, @RequestParam Sort.Direction direction) {
+    public PageCustom<CategoryDto> getCategories(@RequestParam int page, @RequestParam int size, @RequestParam Sort.Direction direction) {
         return categoryHandler.getCategoriesDto(page, size, direction );
     }
 
