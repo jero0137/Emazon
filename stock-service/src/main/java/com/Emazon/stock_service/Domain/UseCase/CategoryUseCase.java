@@ -7,15 +7,16 @@ import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
+import com.Emazon.stock_service.Utils.Constant;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CategoryUseCase implements ICategoryServicePort {
 
-    private static final int MAX_NAME_LENGTH = 50;
-    private static final int MAX_DESCRIPTION_LENGTH = 90;
+
 
     private final ICategoryPersistencePort iCategoryPersistencePort;
 
@@ -36,11 +37,11 @@ public class CategoryUseCase implements ICategoryServicePort {
         if(!missingAttributes.isEmpty()){
             throw new MissingAttributeException(missingAttributes.toString());
         }
-        if(category.getName().length() > MAX_NAME_LENGTH){
-            throw new InvalidLengthException("Category name must have maximum "+MAX_NAME_LENGTH + "characters");
+        if(category.getName().length() > Constant.MAX_CATEGORY_NAME_LENGTH){
+            throw new InvalidLengthException("Category name must have maximum "+Constant.MAX_CATEGORY_NAME_LENGTH + "characters");
         }
-        if(category.getDescription().length() > MAX_DESCRIPTION_LENGTH){
-            throw new InvalidLengthException("Category description must have maximum "+MAX_DESCRIPTION_LENGTH + "characters");
+        if(category.getDescription().length() > Constant.MAX_CATEGORY_DESCRIPTION_LENGTH){
+            throw new InvalidLengthException("Category description must have maximum "+Constant.MAX_CATEGORY_DESCRIPTION_LENGTH + "characters");
         }
         this.iCategoryPersistencePort.saveCategory(category);
         return category;
