@@ -31,24 +31,24 @@ public class bean_configuration {
 
     private final BrandEntityMapper brandEntityMapper;
     private final IBrandRepository brandRepository;
+    private final BrandDtoMapper brandDtoMapper;
 
     @Bean
     public PageEntityMapper pageEntityMapper() {
-        return new PageEntityMapper(categoryEntityMapper);
+        return new PageEntityMapper(categoryEntityMapper, brandEntityMapper);
     }
+
 
     @Bean
     public PageCustomDtoMapper pageDtoMapper() {
-        return new PageCustomDtoMapper(categoryDtoMapper);
+        return new PageCustomDtoMapper(categoryDtoMapper, brandDtoMapper);
     }
 
-    //Cuando necesitemos utilizar algo que implemente la interfaz ICategoryPersistencePort, Spring nos devolverá una instancia de CategoryJpaAdapter
     @Bean
     public ICategoryPersistencePort categoryPersistencePort(){
         return new CategoryJpaAdapter(categoryRepository, categoryEntityMapper, pageEntityMapper());
     }
 
-    //Cuando necesitemos utilizar algo que implemente la interfaz ICategoryServicePort, Spring nos devolverá una instancia de CategoryUseCase
     @Bean
     public ICategoryServicePort categoryServicePort(){
         return new CategoryUseCase(categoryPersistencePort());

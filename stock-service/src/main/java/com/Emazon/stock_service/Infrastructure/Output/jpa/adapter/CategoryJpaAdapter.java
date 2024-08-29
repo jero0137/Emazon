@@ -50,19 +50,17 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     }
     @Override
     public PageCustom<Category> getCategories(Pagination pagination) {
+        if(pagination.getPage() < 0){
+            throw new PageOutOfBoundsException();
+        }
         PageRequest pageRequest = PageRequest.of(
                 pagination.getPage(),
                 pagination.getSize(),
                 Sort.by(pagination.getDirection(), pagination.getSort())
         );
         Page<CategoryEntity> page = categoryRepository.findAll(pageRequest);
-        if(pagination.getPage() >= page.getTotalPages() || pagination.getPage() < 0){
+        if(pagination.getPage() >= page.getTotalPages()){
             throw new PageOutOfBoundsException();
-        }
-        List<CategoryEntity> categoryEntities = page.getContent();
-
-        if(categoryEntities.isEmpty()){
-            throw new NoDataFoundException();
         }
         return pageEntityMapper.toCategoryPageCustom(page);
     }

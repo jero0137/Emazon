@@ -5,10 +5,15 @@ import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandAlreadyExistsException;
+import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IBrandRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -33,10 +38,6 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
         return null;
     }
 
-    @Override
-    public List<Brand> getAllBrands() {
-        return List.of();
-    }
 
     @Override
     public void updateBrand(Brand brand) {
@@ -50,6 +51,18 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
 
     @Override
     public PageCustom<Brand> getBrands(Pagination pagination) {
-        return null;
+        if(pagination.getPage() < 0){
+            throw new PageOutOfBoundsException();
+        }
+        PageRequest pageRequest = PageRequest.of(
+                pagination.getPage(),
+                pagination.getSize(),
+                Sort.by(pagination.getDirection(), pagination.getSort())
+        );
+        Page<BrandEntity> page = brandRepository.findAll(pageRequest);
+        if(pagination.getPage() >= page.getTotalPages()){
+            throw new PageOutOfBoundsException();
+        }
+        return pageEntityMapper.toBrandPageCustom(page);
     }
 }
