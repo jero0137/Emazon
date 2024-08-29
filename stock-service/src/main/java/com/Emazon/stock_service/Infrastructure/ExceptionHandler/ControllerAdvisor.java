@@ -62,7 +62,7 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleBrandAlreadyExistsException(
             BrandAlreadyExistsException brandAlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.BRAND_ALREADY_EXISTS.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, brandAlreadyExistsException.getMessage()));
     }
 
 
