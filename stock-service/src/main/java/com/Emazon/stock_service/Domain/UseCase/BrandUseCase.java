@@ -43,10 +43,6 @@ public class BrandUseCase implements IBrandServicePort {
         return null;
     }
 
-    @Override
-    public List<Brand> getAllBrands() {
-        return List.of();
-    }
 
     @Override
     public void updateBrand(Brand brand) {
@@ -60,6 +56,6 @@ public class BrandUseCase implements IBrandServicePort {
 
     @Override
     public PageCustom<Brand> getBrands(Pagination pagination) {
-        return null;
+        return brandPersistencePort.getBrands(pagination);
     }
 }

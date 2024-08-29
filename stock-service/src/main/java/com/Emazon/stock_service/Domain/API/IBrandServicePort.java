@@ -9,7 +9,6 @@ import java.util.List;
 public interface IBrandServicePort {
     void saveBrand(Brand brand);
     Brand getBrand(Long id);
-    List<Brand> getAllBrands();
     void updateBrand(Brand brand);
     void deleteBrand(Long id);
     PageCustom<Brand> getBrands(Pagination pagination);
