@@ -4,14 +4,19 @@ import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
+import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,4 +78,76 @@ class BrandUseCaseTest {
         brandUseCase.saveBrand(newBrand);
         Mockito.verify(brandPersistencePort).saveBrand(newBrand);
     }
+
+    @Test
+    void shouldReturnPageCustomWhenValidPagination() {
+        Pagination pagination = new Pagination(0, 10, "name", Sort.Direction.ASC);
+        PageCustom<Brand> expectedPage = new PageCustom<>(List.of(new Brand(1L, "Nike", "Sportswear")), 0, 10, 1, 1);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
+    }
+
+    @Test
+    void shouldReturnEmptyPageCustomWhenNoBrands() {
+        Pagination pagination = new Pagination(0, 10, "name", Sort.Direction.ASC);
+        PageCustom<Brand> expectedPage = new PageCustom<>(List.of(), 0, 10, 0, 0);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPageOutOfBounds() {
+        Pagination pagination = new Pagination(10, 10, "name", Sort.Direction.ASC);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenThrow(new PageOutOfBoundsException());
+        assertThrows(PageOutOfBoundsException.class, () -> brandUseCase.getBrands(pagination));
+    }
+
+    @Test
+    void shouldReturnBrandsInAscendingOrder() {
+        int page = 0;
+        int size = 10;
+        String sort = "name";
+        Sort.Direction direction = Sort.Direction.ASC;
+
+        Pagination pagination = new Pagination(page, size, sort, direction);
+        List<Brand> brands = List.of(
+                new Brand(1L, "Adidas", "Sportswear"),
+                new Brand(2L, "Nike", "Sportswear"),
+                new Brand(3L, "Puma", "Sportswear")
+        );
+        PageCustom<Brand> expectedPage = new PageCustom<>(brands, 0, 10, 3, 1);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
+        assertEquals("Adidas", result.getContent().get(0).getName());
+        assertEquals("Nike", result.getContent().get(1).getName());
+        assertEquals("Puma", result.getContent().get(2).getName());
+    }
+
+    @Test
+    void shouldReturnBrandsInDescendingOrder() {
+        int page = 0;
+        int size = 10;
+        String sort = "name";
+        Sort.Direction direction = Sort.Direction.DESC;
+
+        Pagination pagination = new Pagination(page, size, sort, direction);
+        List<Brand> brands = List.of(
+                new Brand(3L, "Puma", "Sportswear"),
+                new Brand(2L, "Nike", "Sportswear"),
+                new Brand(1L, "Adidas", "Sportswear")
+        );
+        PageCustom<Brand> expectedPage = new PageCustom<>(brands, 0, 10, 3, 1);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
+        assertEquals("Puma", result.getContent().get(0).getName());
+        assertEquals("Nike", result.getContent().get(1).getName());
+        assertEquals("Adidas", result.getContent().get(2).getName());
+    }
+
 }
