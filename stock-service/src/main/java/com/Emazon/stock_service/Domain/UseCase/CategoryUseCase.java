@@ -4,15 +4,19 @@ import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
+import com.Emazon.stock_service.Utils.Constant;
 
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class CategoryUseCase implements ICategoryServicePort {
 
-    private static final int MAX_NAME_LENGTH = 50;
-    private static final int MAX_DESCRIPTION_LENGTH = 90;
+
 
     private final ICategoryPersistencePort iCategoryPersistencePort;
 
@@ -22,17 +26,22 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Category saveCategory(Category category) {
+        List<String> missingAttributes = new ArrayList<>();
+
         if(category.getDescription().isEmpty() || category.getDescription() == null){
-            throw new MissingAttributeException("The category mush have a description");
+            missingAttributes.add("The category must have a description");
         }
         if(category.getName().isEmpty() || category.getName() == null){
-            throw new MissingAttributeException("The category mush have a name");
+            missingAttributes.add("The category must have a name");
         }
-        if(category.getName().length() > MAX_NAME_LENGTH){
-            throw new InvalidLengthException("Category name must have maximum "+MAX_NAME_LENGTH + "characters");
+        if(!missingAttributes.isEmpty()){
+            throw new MissingAttributeException(missingAttributes.toString());
         }
-        if(category.getDescription().length() > MAX_DESCRIPTION_LENGTH){
-            throw new InvalidLengthException("Category description must have maximum "+MAX_DESCRIPTION_LENGTH + "characters");
+        if(category.getName().length() > Constant.MAX_CATEGORY_NAME_LENGTH){
+            throw new InvalidLengthException("Category name must have maximum "+Constant.MAX_CATEGORY_NAME_LENGTH + "characters");
+        }
+        if(category.getDescription().length() > Constant.MAX_CATEGORY_DESCRIPTION_LENGTH){
+            throw new InvalidLengthException("Category description must have maximum "+Constant.MAX_CATEGORY_DESCRIPTION_LENGTH + "characters");
         }
         this.iCategoryPersistencePort.saveCategory(category);
         return category;
@@ -55,6 +64,11 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public void deleteCategory(Long id) {
-        this.iCategoryPersistencePort.deleteCategory(id);
+        this.iCategoryPersistencePort.deleteCategoryById(id);
+    }
+
+    @Override
+    public PageCustom<Category> getCategories(Pagination pagination) {
+        return iCategoryPersistencePort.getCategories(pagination);
     }
 }

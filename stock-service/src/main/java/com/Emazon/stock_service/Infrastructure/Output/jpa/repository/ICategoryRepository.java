@@ -1,6 +1,6 @@
-package com.Emazon.stock_service.Infrastructure.Output.Jpa.Repository;
+package com.Emazon.stock_service.Infrastructure.Output.jpa.repository;
 
-import com.Emazon.stock_service.Infrastructure.Output.Jpa.Entity.CategoryEntity;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

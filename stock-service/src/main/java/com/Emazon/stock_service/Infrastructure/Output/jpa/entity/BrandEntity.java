@@ -1,4 +1,4 @@
-package com.Emazon.stock_service.Infrastructure.Output.Jpa.Entity;
+package com.Emazon.stock_service.Infrastructure.Output.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,15 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "category")
+@Table(name = "brand")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class CategoryEntity {
+public class BrandEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
+    @Column(nullable = false, length = 120)
     private String description;
 }
