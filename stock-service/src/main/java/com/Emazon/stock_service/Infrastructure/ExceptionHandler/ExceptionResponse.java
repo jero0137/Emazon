@@ -6,7 +6,8 @@ public enum ExceptionResponse {
     NO_DATA_FOUND("No data found"),
     PAGE_OUT_OF_BOUNDS("Page out of bounds"),
 
-    BRAND_ALREADY_EXISTS("There is already a brand with that name"),;
+    BRAND_ALREADY_EXISTS("There is already a brand with that name"),
+    BRAND_NOT_FOUND("Brand not found"),;
 
     private String message;
 

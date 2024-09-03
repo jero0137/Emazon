@@ -1,18 +1,25 @@
 package com.Emazon.stock_service.Infrastructure.Configuration;
 
+import com.Emazon.stock_service.Application.Mapper.ArticleDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.BrandDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
+import com.Emazon.stock_service.Domain.API.IArticleServicePort;
 import com.Emazon.stock_service.Domain.API.IBrandServicePort;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
+import com.Emazon.stock_service.Domain.SPI.IArticlePersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
+import com.Emazon.stock_service.Domain.UseCase.ArticleUseCase;
 import com.Emazon.stock_service.Domain.UseCase.BrandUseCase;
 import com.Emazon.stock_service.Domain.UseCase.CategoryUseCase;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.ArticleJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.BrandJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.CategoryJpaAdapter;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.ArticleEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IArticleRepository;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IBrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
@@ -32,6 +39,10 @@ public class bean_configuration {
     private final BrandEntityMapper brandEntityMapper;
     private final IBrandRepository brandRepository;
     private final BrandDtoMapper brandDtoMapper;
+
+    private final ArticleEntityMapper articleEntityMapper;
+    private final IArticleRepository articleRepository;
+    private final ArticleDtoMapper articleDtoMapper;
 
     @Bean
     public PageEntityMapper pageEntityMapper() {
@@ -64,6 +75,14 @@ public class bean_configuration {
         return new BrandUseCase(brandPersistencePort());
     }
 
+    @Bean
+    public IArticlePersistencePort articlePersistencePort(){
+        return new ArticleJpaAdapter(articleRepository, categoryRepository, brandRepository,articleEntityMapper);
+    }
 
+    @Bean
+    public IArticleServicePort articleServicePort(){
+        return new ArticleUseCase(articlePersistencePort(), categoryPersistencePort(), brandPersistencePort());
+    }
 
 }
