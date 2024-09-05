@@ -2,7 +2,6 @@ package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.BrandDto;
 import com.Emazon.stock_service.Application.Handler.IBrandHandler;
-import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

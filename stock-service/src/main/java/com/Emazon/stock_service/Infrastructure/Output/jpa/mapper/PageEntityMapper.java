@@ -5,7 +5,6 @@ import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 

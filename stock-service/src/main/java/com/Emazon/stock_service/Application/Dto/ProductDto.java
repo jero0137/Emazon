@@ -6,10 +6,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ArticleDto {
+public class ProductDto {
     private String name;
     private String description;
-    private int amount;
+    private int quantity;
     private Long price;
     private List<Long> categoriesIds;
     private Long brandId;

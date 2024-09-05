@@ -1,28 +1,28 @@
 package com.Emazon.stock_service.Infrastructure.Configuration;
 
-import com.Emazon.stock_service.Application.Mapper.ArticleDtoMapper;
+
 import com.Emazon.stock_service.Application.Mapper.BrandDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
-import com.Emazon.stock_service.Domain.API.IArticleServicePort;
+import com.Emazon.stock_service.Application.Mapper.ProductDtoMapper;
+import com.Emazon.stock_service.Domain.API.IProductServicePort;
 import com.Emazon.stock_service.Domain.API.IBrandServicePort;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
-import com.Emazon.stock_service.Domain.SPI.IArticlePersistencePort;
+import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
-import com.Emazon.stock_service.Domain.UseCase.ArticleUseCase;
+import com.Emazon.stock_service.Domain.UseCase.ProductUseCase;
 import com.Emazon.stock_service.Domain.UseCase.BrandUseCase;
 import com.Emazon.stock_service.Domain.UseCase.CategoryUseCase;
-import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.ArticleJpaAdapter;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.ProductJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.BrandJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.CategoryJpaAdapter;
-import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.ArticleEntityMapper;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.ProductEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
-import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IArticleRepository;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IProductRepository;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IBrandRepository;
 import lombok.RequiredArgsConstructor;
-import org.bson.codecs.pojo.annotations.BsonRepresentation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.CategoryEntityMapper;
@@ -40,9 +40,8 @@ public class bean_configuration {
     private final IBrandRepository brandRepository;
     private final BrandDtoMapper brandDtoMapper;
 
-    private final ArticleEntityMapper articleEntityMapper;
-    private final IArticleRepository articleRepository;
-    private final ArticleDtoMapper articleDtoMapper;
+    private final ProductEntityMapper productEntityMapper;
+    private final IProductRepository articleRepository;
 
     @Bean
     public PageEntityMapper pageEntityMapper() {
@@ -76,13 +75,13 @@ public class bean_configuration {
     }
 
     @Bean
-    public IArticlePersistencePort articlePersistencePort(){
-        return new ArticleJpaAdapter(articleRepository, categoryRepository, brandRepository,articleEntityMapper);
+    public IProductPersistencePort articlePersistencePort(){
+        return new ProductJpaAdapter(articleRepository, categoryRepository, brandRepository, productEntityMapper);
     }
 
     @Bean
-    public IArticleServicePort articleServicePort(){
-        return new ArticleUseCase(articlePersistencePort(), categoryPersistencePort(), brandPersistencePort());
+    public IProductServicePort articleServicePort(){
+        return new ProductUseCase(articlePersistencePort(), categoryPersistencePort(), brandPersistencePort());
     }
 
 }

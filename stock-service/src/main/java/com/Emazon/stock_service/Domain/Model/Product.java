@@ -2,7 +2,7 @@ package com.Emazon.stock_service.Domain.Model;
 
 import java.util.List;
 
-public class Article {
+public class Product {
     private Long id;
     private String name;
     private String description;
@@ -11,21 +11,14 @@ public class Article {
     private List<Category> categories;
     private Brand brand;
 
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public Article(Long id, String name, String description, int amount, Long price, List<Category> categories) {
+    public Product(Long id, String name, String description, int amount, Long price, List<Category> categories, Brand brand) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = amount;
         this.price = price;
         this.categories = categories;
+        this.brand = brand;
     }
 
     // Getters and setters
@@ -76,5 +69,12 @@ public class Article {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 }

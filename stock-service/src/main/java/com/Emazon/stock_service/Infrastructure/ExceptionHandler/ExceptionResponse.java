@@ -7,9 +7,12 @@ public enum ExceptionResponse {
     PAGE_OUT_OF_BOUNDS("Page out of bounds"),
 
     BRAND_ALREADY_EXISTS("There is already a brand with that name"),
-    BRAND_NOT_FOUND("Brand not found"),;
+    BRAND_NOT_FOUND("Brand not found"),
 
-    private String message;
+    PRODUCT_ALREADY_EXISTS("There is already a product with that name"),
+    PRODUCT_NOT_FOUND("Product not found");
+
+    private final String message;
 
     ExceptionResponse(String s) {
         this.message = s;

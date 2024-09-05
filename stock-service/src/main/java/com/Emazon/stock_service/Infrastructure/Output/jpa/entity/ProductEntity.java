@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Entity
-@Table(name = "article")
+@Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Service
-public class ArticleEntity {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class ArticleEntity {
     private String description;
 
     @Column(nullable = false)
-    private int amount;
+    private int quantity;
 
     @Column(nullable = false)
     private String price;
@@ -39,8 +39,8 @@ public class ArticleEntity {
     @Lazy
     @ManyToMany
     @JoinTable(
-            name = "article_category",
-            joinColumns = @JoinColumn(name = "article_id"),
+            name = "productXcategory",
+            joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<CategoryEntity> categories;

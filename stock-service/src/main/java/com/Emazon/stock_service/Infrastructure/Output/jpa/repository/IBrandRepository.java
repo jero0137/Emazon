@@ -2,7 +2,6 @@ package com.Emazon.stock_service.Infrastructure.Output.jpa.repository;
 
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

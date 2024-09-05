@@ -7,7 +7,9 @@ import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
+import com.Emazon.stock_service.Utils.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrandUseCase implements IBrandServicePort {
@@ -20,20 +22,25 @@ public class BrandUseCase implements IBrandServicePort {
 
     @Override
     public void saveBrand(Brand brand) {
+        List<String> missingAttributes = new ArrayList<>();
+
         if(brand == null) {
             throw new IllegalArgumentException("Brand cannot be null");
         }
         if(brand.getName() == null || brand.getName().isEmpty()) {
-            throw new MissingAttributeException("Brand name cannot be null or empty");
-        }
-        if(brand.getName().length() > 50) {
-            throw new InvalidLengthException("Brand name cannot be longer than 50 characters");
+            missingAttributes.add("Brand name is missing");
         }
         if(brand.getDescription() == null || brand.getDescription().isEmpty()) {
-            throw new MissingAttributeException("Brand description cannot be null or empty");
+            missingAttributes.add("Brand description is missing");
+        }
+        if (!missingAttributes.isEmpty()) {
+            throw new MissingAttributeException(missingAttributes.toString());
+        }
+        if(brand.getName().length() > 50) {
+            throw new InvalidLengthException("Brand name cannot be longer than" + Constant.MAX_BRAND_NAME_LENGTH +" characters");
         }
         if(brand.getDescription().length() > 100) {
-            throw new InvalidLengthException("Brand description cannot be longer than 100 characters");
+            throw new InvalidLengthException("Brand description cannot be longer" + Constant.MAX_BRAND_DESCRIPTION_LENGTH+ " characters");
         }
         this.brandPersistencePort.saveBrand(brand);
     }
