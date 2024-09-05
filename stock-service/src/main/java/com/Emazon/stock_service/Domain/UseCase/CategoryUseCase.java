@@ -7,6 +7,7 @@ import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
+import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
 import com.Emazon.stock_service.Utils.Constant;
 
 
@@ -25,7 +26,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public Category saveCategory(Category category) {
+    public void saveCategory(Category category) {
         List<String> missingAttributes = new ArrayList<>();
 
         if(category.getDescription().isEmpty() || category.getDescription() == null){
@@ -44,11 +45,16 @@ public class CategoryUseCase implements ICategoryServicePort {
             throw new InvalidLengthException("Category description must have maximum "+Constant.MAX_CATEGORY_DESCRIPTION_LENGTH + "characters");
         }
         this.iCategoryPersistencePort.saveCategory(category);
-        return category;
     }
 
     @Override
     public Category getCategory(Long id) {
+        if(id == null){
+            throw new MissingAttributeException("Category id is missing");
+        }
+        if(iCategoryPersistencePort.getCategory(id) == null){
+            throw new CategoryNotFoundException();
+        }
         return this.iCategoryPersistencePort.getCategory(id);
     }
 

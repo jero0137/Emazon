@@ -5,6 +5,7 @@ import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandAlreadyExistsException;
+import com.Emazon.stock_service.Infrastructure.Exception.BrandNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
 
 @AllArgsConstructor
 public class BrandJpaAdapter implements IBrandPersistencePort {
@@ -35,7 +35,7 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
 
     @Override
     public Brand getBrand(Long id) {
-        return null;
+        return brandEntityMapper.toBrand(brandRepository.findById(id).orElseThrow(BrandNotFoundException::new));
     }
 
 

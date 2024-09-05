@@ -2,7 +2,6 @@ package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.BrandDto;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
-import com.Emazon.stock_service.Domain.Model.Pagination;
 import org.springframework.data.domain.Sort;
 
 public interface IBrandHandler {

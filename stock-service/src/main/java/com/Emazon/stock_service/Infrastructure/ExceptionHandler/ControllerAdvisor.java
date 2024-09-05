@@ -62,8 +62,21 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleBrandAlreadyExistsException(
             BrandAlreadyExistsException brandAlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Collections.singletonMap(MESSAGE, brandAlreadyExistsException.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.BRAND_ALREADY_EXISTS.getMessage()));
     }
 
+    @ExceptionHandler(BrandNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleBrandNotFoundException(
+            BrandNotFoundException brandNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.BRAND_NOT_FOUND.getMessage()));
+    }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleProductAlreadyExistsException(
+            ProductAlreadyExistsException productAlreadyExistsException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_ALREADY_EXISTS.getMessage()));
+    }
 
 }
