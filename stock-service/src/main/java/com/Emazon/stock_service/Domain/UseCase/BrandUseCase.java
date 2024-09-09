@@ -2,7 +2,9 @@ package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.API.IBrandServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
@@ -63,6 +65,12 @@ public class BrandUseCase implements IBrandServicePort {
 
     @Override
     public PageCustom<Brand> getBrands(Pagination pagination) {
+        if(pagination.getPage() < 0){
+            throw new PageOutOfBoundsException();
+        }
+        if (pagination.getSize() <= 0){
+            throw new InvalidPageSizeException();
+        }
         return brandPersistencePort.getBrands(pagination);
     }
 }

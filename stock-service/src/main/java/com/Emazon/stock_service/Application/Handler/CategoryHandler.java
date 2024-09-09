@@ -1,6 +1,7 @@
 package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.CategoryDto;
+import com.Emazon.stock_service.Application.Dto.CategoryDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
@@ -11,8 +12,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +34,7 @@ public class CategoryHandler implements ICategoryHandler {
         return categoryDtoMapper.toCategoryDto(category);
     }
 
-    @Override
-    public List<CategoryDto> getAllCategoriesDto() {
-        return categoryDtoMapper.toCategoriesDto(categoryServicePort.getAllCategories());
-    }
+
 
     @Override
     public void updateCategoryDto(CategoryDto categoryDto) {
@@ -52,7 +48,7 @@ public class CategoryHandler implements ICategoryHandler {
     }
 
     @Override
-    public PageCustom<CategoryDto> getCategoriesDto(int page, int size, Sort.Direction direction) {
+    public PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, Sort.Direction direction) {
         Pagination pagination = new Pagination(page, size, "name", direction);
         return pageCustomDtoMapper.toCategoryDtoPageCustom(categoryServicePort.getCategories(pagination));
     }

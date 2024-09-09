@@ -1,7 +1,6 @@
 package com.Emazon.stock_service.Infrastructure.ExceptionHandler;
 
-import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
-import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
+import com.Emazon.stock_service.Domain.Exception.*;
 import com.Emazon.stock_service.Infrastructure.Exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +28,6 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_NOT_FOUND.getMessage()));
     }
 
-    @ExceptionHandler(PageOutOfBoundsException.class)
-    public ResponseEntity<Map<String, String>> handlePageOutOfBoundsException(
-            PageOutOfBoundsException pageOutOfBoundsException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PAGE_OUT_OF_BOUNDS.getMessage()));
-    }
 
     @ExceptionHandler(NoDataFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoDataFoundException(
@@ -42,7 +35,6 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
     }
-
 
     @ExceptionHandler(MissingAttributeException.class)
     public ResponseEntity<Map<String, String>> handleMissingAttributeException(
@@ -79,4 +71,32 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_ALREADY_EXISTS.getMessage()));
     }
 
+    @ExceptionHandler(InvalidPageSizeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidPageSizeException(
+            InvalidPageSizeException invalidPageSizeException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_PAGE_SIZE.getMessage()));
+    }
+
+
+    @ExceptionHandler(PageOutOfBoundsException.class)
+    public ResponseEntity<Map<String, String>> handlePageOutOfBoundsException(
+            PageOutOfBoundsException pageOutOfBoundsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PAGE_OUT_OF_BOUNDS.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidSortDirectionException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidSortDirectionException(
+            InvalidSortDirectionException invalidSortDirectionException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_SORT_DIRECTION.getMessage()));
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleProductNotFoundException(
+            ProductNotFoundException productNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_NOT_FOUND.getMessage()));
+    }
 }

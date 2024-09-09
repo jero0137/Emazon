@@ -3,11 +3,10 @@ package com.Emazon.stock_service.Domain.UseCase;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Brand;
-import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
-import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,10 +16,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class BrandUseCaseTest {
 

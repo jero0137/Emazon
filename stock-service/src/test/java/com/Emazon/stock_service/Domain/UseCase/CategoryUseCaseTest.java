@@ -6,7 +6,7 @@ import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
-import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

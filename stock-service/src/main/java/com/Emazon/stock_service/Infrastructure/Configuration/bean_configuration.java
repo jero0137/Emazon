@@ -1,10 +1,5 @@
 package com.Emazon.stock_service.Infrastructure.Configuration;
 
-
-import com.Emazon.stock_service.Application.Mapper.BrandDtoMapper;
-import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
-import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
-import com.Emazon.stock_service.Application.Mapper.ProductDtoMapper;
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
 import com.Emazon.stock_service.Domain.API.IBrandServicePort;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
@@ -34,24 +29,16 @@ public class bean_configuration {
 
     private final CategoryEntityMapper categoryEntityMapper;
     private final ICategoryRepository categoryRepository;
-    private final CategoryDtoMapper categoryDtoMapper;
 
     private final BrandEntityMapper brandEntityMapper;
     private final IBrandRepository brandRepository;
-    private final BrandDtoMapper brandDtoMapper;
 
     private final ProductEntityMapper productEntityMapper;
     private final IProductRepository articleRepository;
 
     @Bean
     public PageEntityMapper pageEntityMapper() {
-        return new PageEntityMapper(categoryEntityMapper, brandEntityMapper);
-    }
-
-
-    @Bean
-    public PageCustomDtoMapper pageDtoMapper() {
-        return new PageCustomDtoMapper(categoryDtoMapper, brandDtoMapper);
+        return new PageEntityMapper(categoryEntityMapper, brandEntityMapper, productEntityMapper);
     }
 
     @Bean
@@ -75,13 +62,13 @@ public class bean_configuration {
     }
 
     @Bean
-    public IProductPersistencePort articlePersistencePort(){
-        return new ProductJpaAdapter(articleRepository, categoryRepository, brandRepository, productEntityMapper);
+    public IProductPersistencePort productPersistencePort(){
+        return new ProductJpaAdapter(articleRepository, categoryRepository, brandRepository, productEntityMapper, pageEntityMapper());
     }
 
     @Bean
     public IProductServicePort articleServicePort(){
-        return new ProductUseCase(articlePersistencePort(), categoryPersistencePort(), brandPersistencePort());
+        return new ProductUseCase(productPersistencePort(), categoryPersistencePort(), brandPersistencePort());
     }
 
 }

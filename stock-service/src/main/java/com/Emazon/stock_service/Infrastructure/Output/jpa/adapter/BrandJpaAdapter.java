@@ -6,7 +6,7 @@ import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandAlreadyExistsException;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandNotFoundException;
-import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
