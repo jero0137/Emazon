@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductRestController {
-    private final IProductHandler articleHandler;
+    private final IProductHandler productHandler;
+
 
     @PostMapping("/")
     public ResponseEntity<Void> saveArticle(@RequestBody ProductDto productDto) {
-        articleHandler.saveArticleDto(productDto);
+        productHandler.saveArticleDto(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -27,6 +28,6 @@ public class ProductRestController {
                                                               @RequestParam(defaultValue = "ASC") Sort.Direction direction,
                                                               @RequestParam(defaultValue = "") String category,
                                                               @RequestParam(defaultValue = "") String brand) {
-        return ResponseEntity.ok(articleHandler.getArticlesDto(page, size, direction, category, brand));
+        return ResponseEntity.ok(productHandler.getArticlesDto(page, size, direction, category, brand));
     }
 }

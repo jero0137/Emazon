@@ -50,7 +50,8 @@ public class ProductUseCase implements IProductServicePort {
 
     @Override
     public PageCustom<Product> getProducts(Pagination pagination, String category, String brand) {
-        return articlePersistencePort.getProducts(pagination);
+
+        return articlePersistencePort.getProducts(pagination, category, brand);
     }
 
     private static List<String> getStrings(Product product) {

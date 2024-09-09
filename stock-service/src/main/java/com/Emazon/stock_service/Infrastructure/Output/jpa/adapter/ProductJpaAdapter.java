@@ -7,6 +7,7 @@ import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Exception.ProductAlreadyExistsException;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.Specification.ProductSpecification;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.ProductEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,9 +64,13 @@ public class ProductJpaAdapter implements IProductPersistencePort {
     }
 
     @Override
-    public PageCustom<Product> getProducts(Pagination pagination) {
+    public PageCustom<Product> getProducts(Pagination pagination, String category, String brand) {
+
+        Specification<ProductEntity> spec = Specification.where(ProductSpecification.hasCategory(category))
+                .and(ProductSpecification.hasBrand(brand));
+
         PageRequest pageRequest = PageRequest.of(pagination.getPage(), pagination.getSize(), Sort.by(pagination.getDirection(), pagination.getSort()));
-        Page<ProductEntity> productEntityPage = articleRepository.findAll(pageRequest);
+        Page<ProductEntity> productEntityPage = articleRepository.findAll(spec, pageRequest);
 
         return pageEntityMapper.toProductDtoPageCustom(productEntityPage);
     }
