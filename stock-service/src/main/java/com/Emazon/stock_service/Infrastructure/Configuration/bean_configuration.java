@@ -42,16 +42,17 @@ public class bean_configuration {
 
     private final ProductEntityMapper productEntityMapper;
     private final IProductRepository articleRepository;
+    private final ProductDtoMapper productDtoMapper;
 
     @Bean
     public PageEntityMapper pageEntityMapper() {
-        return new PageEntityMapper(categoryEntityMapper, brandEntityMapper);
+        return new PageEntityMapper(categoryEntityMapper, brandEntityMapper, productEntityMapper);
     }
 
 
     @Bean
     public PageCustomDtoMapper pageDtoMapper() {
-        return new PageCustomDtoMapper(categoryDtoMapper, brandDtoMapper);
+        return new PageCustomDtoMapper(categoryDtoMapper, brandDtoMapper, productDtoMapper);
     }
 
     @Bean
@@ -75,13 +76,13 @@ public class bean_configuration {
     }
 
     @Bean
-    public IProductPersistencePort articlePersistencePort(){
-        return new ProductJpaAdapter(articleRepository, categoryRepository, brandRepository, productEntityMapper);
+    public IProductPersistencePort productPersistencePort(){
+        return new ProductJpaAdapter(articleRepository, categoryRepository, brandRepository, productEntityMapper, pageEntityMapper());
     }
 
     @Bean
     public IProductServicePort articleServicePort(){
-        return new ProductUseCase(articlePersistencePort(), categoryPersistencePort(), brandPersistencePort());
+        return new ProductUseCase(productPersistencePort(), categoryPersistencePort(), brandPersistencePort());
     }
 
 }

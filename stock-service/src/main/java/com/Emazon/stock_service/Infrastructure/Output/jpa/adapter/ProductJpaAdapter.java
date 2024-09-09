@@ -1,5 +1,7 @@
 package com.Emazon.stock_service.Infrastructure.Output.jpa.adapter;
 
+import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.Model.Product;
 import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandNotFoundException;
@@ -8,11 +10,15 @@ import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundExcepti
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.ProductEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.ProductEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IProductRepository;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.IBrandRepository;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.ICategoryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +30,7 @@ public class ProductJpaAdapter implements IProductPersistencePort {
     private final ICategoryRepository categoryRepository;
     private final IBrandRepository brandRepository;
     private final ProductEntityMapper productEntityMapper;
+    private final PageEntityMapper pageEntityMapper;
 
 
     @Override
@@ -52,5 +59,13 @@ public class ProductJpaAdapter implements IProductPersistencePort {
     @Override
     public Product getArticle(Long id) {
         return productEntityMapper.toProduct(articleRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public PageCustom<Product> getProducts(Pagination pagination) {
+        PageRequest pageRequest = PageRequest.of(pagination.getPage(), pagination.getSize(), Sort.by(pagination.getDirection(), pagination.getSort()));
+        Page<ProductEntity> productEntityPage = articleRepository.findAll(pageRequest);
+
+        return pageEntityMapper.toProductDtoPageCustom(productEntityPage);
     }
 }

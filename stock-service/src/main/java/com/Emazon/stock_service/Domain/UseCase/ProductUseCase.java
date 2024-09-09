@@ -3,9 +3,7 @@ package com.Emazon.stock_service.Domain.UseCase;
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
-import com.Emazon.stock_service.Domain.Model.Product;
-import com.Emazon.stock_service.Domain.Model.Brand;
-import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.*;
 import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
@@ -13,7 +11,6 @@ import com.Emazon.stock_service.Utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProductUseCase implements IProductServicePort {
     private final IProductPersistencePort articlePersistencePort;
@@ -26,7 +23,7 @@ public class ProductUseCase implements IProductServicePort {
         this.brandPersistencePort = brandPersistencePort;
     }
 
-
+    @Override
     public void saveArticle(Product product) {
 
         List<String> missingAttributes = getStrings(product);
@@ -49,6 +46,11 @@ public class ProductUseCase implements IProductServicePort {
         product.setBrand(brand);
 
         articlePersistencePort.saveArticle(product);
+    }
+
+    @Override
+    public PageCustom<Product> getProducts(Pagination pagination, String category, String brand) {
+        return articlePersistencePort.getProducts(pagination);
     }
 
     private static List<String> getStrings(Product product) {

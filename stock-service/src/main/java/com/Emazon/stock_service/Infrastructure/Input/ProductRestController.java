@@ -2,16 +2,15 @@ package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.ProductDto;
 import com.Emazon.stock_service.Application.Handler.IProductHandler;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductRestController {
     private final IProductHandler articleHandler;
@@ -20,5 +19,14 @@ public class ProductRestController {
     public ResponseEntity<Void> saveArticle(@RequestBody ProductDto productDto) {
         articleHandler.saveArticleDto(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<PageCustom<ProductDto>> getArticles(@RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size,
+                                                              @RequestParam(defaultValue = "ASC") Sort.Direction direction,
+                                                              @RequestParam(defaultValue = "") String category,
+                                                              @RequestParam(defaultValue = "") String brand) {
+        return ResponseEntity.ok(articleHandler.getArticlesDto(page, size, direction, category, brand));
     }
 }
