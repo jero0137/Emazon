@@ -2,11 +2,13 @@ package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.*;
 import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Utils.Constant;
 
 import java.util.ArrayList;
@@ -50,7 +52,12 @@ public class ProductUseCase implements IProductServicePort {
 
     @Override
     public PageCustom<Product> getProducts(Pagination pagination, String category, String brand) {
-
+        if(pagination.getPage() < 0){
+            throw new PageOutOfBoundsException();
+        }
+        if (pagination.getSize() <= 0){
+            throw new InvalidPageSizeException();
+        }
         return articlePersistencePort.getProducts(pagination, category, brand);
     }
 

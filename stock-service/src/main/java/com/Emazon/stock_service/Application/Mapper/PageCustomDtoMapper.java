@@ -1,27 +1,30 @@
 package com.Emazon.stock_service.Application.Mapper;
 
-import com.Emazon.stock_service.Application.Dto.BrandDto;
-import com.Emazon.stock_service.Application.Dto.CategoryDto;
-import com.Emazon.stock_service.Application.Dto.ProductDto;
+import com.Emazon.stock_service.Application.Dto.*;
 import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Product;
-import lombok.AllArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@AllArgsConstructor
+
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
+        unmappedSourcePolicy = org.mapstruct.ReportingPolicy.IGNORE,
+        uses = {CategoryDtoResponseMapper.class, BrandDtoResponseMapper.class, ProductDtoResponseMapper.class})
 public class PageCustomDtoMapper {
 
-    private final CategoryDtoMapper categoryDtoMapper;
-    private final BrandDtoMapper brandDtoMapper;
-    private final ProductDtoMapper productDtoMapper;
+    CategoryDtoResponseMapper CATEGORY_DTORESPONSE_MAPPER = Mappers.getMapper(CategoryDtoResponseMapper.class);
+    BrandDtoResponseMapper BRAND_DTORESPONSE_MAPPER = Mappers.getMapper(BrandDtoResponseMapper.class);
+    ProductDtoResponseMapper PRODUCT_DTORESPONSE_MAPPER = Mappers.getMapper(ProductDtoResponseMapper.class);
 
-    public PageCustom<CategoryDto> toCategoryDtoPageCustom(PageCustom<Category> page) {
-        PageCustom<CategoryDto> pageCustom = new PageCustom<>();
-        List<CategoryDto> categories = page.getContent().stream()
-                .map(categoryDtoMapper::toCategoryDto)
+    public PageCustom<CategoryDtoResponse> toCategoryDtoPageCustom(PageCustom<Category> page) {
+        PageCustom<CategoryDtoResponse> pageCustom = new PageCustom<>();
+        List<CategoryDtoResponse> categories = page.getContent().stream()
+                .map(CATEGORY_DTORESPONSE_MAPPER::toCategoryDtoResponse)
                 .toList();
 
         pageCustom.setContent(categories);
@@ -32,13 +35,13 @@ public class PageCustomDtoMapper {
         return pageCustom;
     }
 
-    public PageCustom<BrandDto> toBrandDtoPageCustom(PageCustom<Brand> page) {
-        PageCustom<BrandDto> pageCustom = new PageCustom<>();
-        List<BrandDto> categories = page.getContent().stream()
-                .map(brandDtoMapper::toBrandDto)
+    public PageCustom<BrandDtoResponse> toBrandDtoPageCustom(PageCustom<Brand> page) {
+        PageCustom<BrandDtoResponse> pageCustom = new PageCustom<>();
+        List<BrandDtoResponse> brands = page.getContent().stream()
+                .map(BRAND_DTORESPONSE_MAPPER::toBrandDtoResponse)
                 .toList();
 
-        pageCustom.setContent(categories);
+        pageCustom.setContent(brands);
         pageCustom.setPageSize(page.getPageSize());
         pageCustom.setTotalElements(page.getTotalElements());
         pageCustom.setTotalPages(page.getTotalPages());
@@ -46,10 +49,10 @@ public class PageCustomDtoMapper {
         return pageCustom;
     }
 
-    public PageCustom<ProductDto> toProductDtoPageCustom(PageCustom<Product> page) {
-        PageCustom<ProductDto> pageCustom = new PageCustom<>();
-        List<ProductDto> products = page.getContent().stream()
-                .map(productDtoMapper::toProductDto)
+    public PageCustom<ProductDtoResponse> toProductDtoPageCustom(PageCustom<Product> page) {
+        PageCustom<ProductDtoResponse> pageCustom = new PageCustom<>();
+        List<ProductDtoResponse> products = page.getContent().stream()
+                .map(PRODUCT_DTORESPONSE_MAPPER::toProductDtoResponse)
                 .toList();
 
         pageCustom.setContent(products);

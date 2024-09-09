@@ -1,10 +1,10 @@
 package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
-import com.Emazon.stock_service.Domain.Model.Brand;
-import com.Emazon.stock_service.Domain.Model.Category;
-import com.Emazon.stock_service.Domain.Model.Product;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Model.*;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -63,6 +64,43 @@ class ProductUseCaseTest {
     void shouldThrowExceptionWhenProductHasMissingAttributes() {
         Product product = new Product(1L, null, "Description", 100, 20000L, List.of(new Category(1L, "Category", "Description")), new Brand(1L, "Brand", "Description"));
         assertThrows(MissingAttributeException.class, () -> productUseCase.saveArticle(product));
+    }
+
+    @Test
+    void shouldReturnProductsWhenPaginationAndFiltersAreValid() {
+        Pagination pagination = new Pagination(0, 10, "name", Sort.Direction.ASC);
+        String category = "Electronics";
+        String brand = "BrandA";
+
+        PageCustom<Product> expectedPage = new PageCustom<>(List.of(new Product(1L, "Product Name", "Description", 100, 1000000L, List.of(new Category(1L, "Electronics", "Description")), new Brand(1L, "BrandA", "Description"))), 0, 10, 1, 1);
+
+        when(productPersistencePort.getProducts(pagination, category, brand)).thenReturn(expectedPage);
+
+        PageCustom<Product> result = productUseCase.getProducts(pagination, category, brand);
+
+        assertEquals(expectedPage, result);
+        verify(productPersistencePort).getProducts(pagination, category, brand);
+    }
+
+    @Test
+    void shouldThrowPageOutOfBoundsExceptionWhenPageIsNegative() {
+        Pagination pagination = new Pagination(-1, 10, "name", Sort.Direction.ASC);
+
+        assertThrows(PageOutOfBoundsException.class, () -> productUseCase.getProducts(pagination, "Electronics", "BrandA"));
+    }
+
+    @Test
+    void shouldThrowInvalidPageSizeExceptionWhenPageSizeIsZero() {
+        Pagination pagination = new Pagination(0, 0, "name", Sort.Direction.ASC);
+
+        assertThrows(InvalidPageSizeException.class, () -> productUseCase.getProducts(pagination, "Electronics", "BrandA"));
+    }
+
+    @Test
+    void shouldThrowInvalidPageSizeExceptionWhenPageSizeIsNegative() {
+        Pagination pagination = new Pagination(0, -1, "name", Sort.Direction.ASC);
+
+        assertThrows(InvalidPageSizeException.class, () -> productUseCase.getProducts(pagination, "Electronics", "BrandA"));
     }
 
 }

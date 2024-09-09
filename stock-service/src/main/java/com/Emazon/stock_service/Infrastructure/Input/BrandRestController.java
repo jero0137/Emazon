@@ -1,8 +1,12 @@
 package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.BrandDto;
+import com.Emazon.stock_service.Application.Dto.BrandDtoResponse;
 import com.Emazon.stock_service.Application.Handler.IBrandHandler;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -16,14 +20,26 @@ public class BrandRestController {
 
     private final IBrandHandler brandHandler;
 
+    @Operation(summary = "Save a new brand")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Brand created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PostMapping("/")
     public ResponseEntity<Void> saveBrand(@RequestBody BrandDto brandDto) {
         brandHandler.saveBrandDto(brandDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Get all brands")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found all brands"),
+            @ApiResponse(responseCode = "404", description = "Brands not found")
+    })
     @GetMapping("/")
-    public PageCustom<BrandDto> getBrands(@RequestParam int page, @RequestParam int size, @RequestParam Sort.Direction direction) {
+    public PageCustom<BrandDtoResponse> getBrands(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size,
+                                                  @RequestParam(defaultValue = "ASC") Sort.Direction direction) {
         return brandHandler.getBrandsDto(page, size, direction);
     }
 }

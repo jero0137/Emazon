@@ -1,6 +1,7 @@
 package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.ProductDto;
+import com.Emazon.stock_service.Application.Dto.ProductDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.ProductDtoMapper;
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
@@ -46,7 +47,7 @@ public class ProductHandler implements IProductHandler {
     }
 
     @Override
-    public PageCustom<ProductDto> getArticlesDto(int page, int size, Sort.Direction direction, String category, String brand) {
+    public PageCustom<ProductDtoResponse> getArticlesDto(int page, int size, Sort.Direction direction, String category, String brand) {
         Pagination pagination = new Pagination(page, size, "name", direction);
         return pageCustomDtoMapper.toProductDtoPageCustom(productServicePort.getProducts(pagination, category, brand));
 

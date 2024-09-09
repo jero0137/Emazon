@@ -7,7 +7,7 @@ import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryAlreadyExistsException;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Exception.NoDataFoundException;
-import com.Emazon.stock_service.Infrastructure.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.CategoryEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.CategoryEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
@@ -50,9 +50,7 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     }
     @Override
     public PageCustom<Category> getCategories(Pagination pagination) {
-        if(pagination.getPage() < 0){
-            throw new PageOutOfBoundsException();
-        }
+
         PageRequest pageRequest = PageRequest.of(
                 pagination.getPage(),
                 pagination.getSize(),

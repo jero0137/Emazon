@@ -2,6 +2,7 @@ package com.Emazon.stock_service.Application.Handler;
 
 
 import com.Emazon.stock_service.Application.Dto.BrandDto;
+import com.Emazon.stock_service.Application.Dto.BrandDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.BrandDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Domain.API.IBrandServicePort;
@@ -42,7 +43,7 @@ public class BrandHandler implements IBrandHandler{
     }
 
     @Override
-    public PageCustom<BrandDto> getBrandsDto(int page, int size, Sort.Direction direction) {
+    public PageCustom<BrandDtoResponse> getBrandsDto(int page, int size, Sort.Direction direction) {
         Pagination pagination = new Pagination(page, size, "name", direction);
         return pageCustomDtoMapper.toBrandDtoPageCustom(brandServicePort.getBrands(pagination));
     }

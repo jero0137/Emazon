@@ -2,12 +2,14 @@ package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
+import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import com.Emazon.stock_service.Utils.Constant;
 
 
@@ -75,6 +77,12 @@ public class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public PageCustom<Category> getCategories(Pagination pagination) {
+        if(pagination.getPage() < 0){
+            throw new PageOutOfBoundsException();
+        }
+        if (pagination.getSize() <= 0){
+            throw new InvalidPageSizeException();
+        }
         return iCategoryPersistencePort.getCategories(pagination);
     }
 }
