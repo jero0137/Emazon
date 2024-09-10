@@ -5,7 +5,9 @@ import com.Emazon.stock_service.Application.Dto.ProductDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.ProductDtoMapper;
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
+import com.Emazon.stock_service.Domain.Exception.InvalidSortDirectionException;
 import com.Emazon.stock_service.Domain.Model.*;
+import com.Emazon.stock_service.Utils.Constant;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -47,8 +49,12 @@ public class ProductHandler implements IProductHandler {
     }
 
     @Override
-    public PageCustom<ProductDtoResponse> getArticlesDto(int page, int size, Sort.Direction direction, String category, String brand) {
-        Pagination pagination = new Pagination(page, size, "name", direction);
+    public PageCustom<ProductDtoResponse> getArticlesDto(int page, int size, String direction, String category, String brand) {
+        if (direction == null || direction.isEmpty() ||
+                (!Constant.SORT_DIRECTION_ASC.equalsIgnoreCase(direction) && !Constant.SORT_DIRECTION_DESC.equalsIgnoreCase(direction))) {
+            throw new InvalidSortDirectionException();
+        }
+        Pagination pagination = new Pagination(page, size, "name", Sort.Direction.fromString(direction.toUpperCase()));
         return pageCustomDtoMapper.toProductDtoPageCustom(productServicePort.getProducts(pagination, category, brand));
 
     }

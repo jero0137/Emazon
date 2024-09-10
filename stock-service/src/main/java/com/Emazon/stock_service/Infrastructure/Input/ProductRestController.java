@@ -4,6 +4,7 @@ import com.Emazon.stock_service.Application.Dto.ProductDto;
 import com.Emazon.stock_service.Application.Dto.ProductDtoResponse;
 import com.Emazon.stock_service.Application.Handler.IProductHandler;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Utils.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,9 +37,9 @@ public class ProductRestController {
             @ApiResponse(responseCode = "404", description = "Articles not found")
     })
     @GetMapping("/")
-    public ResponseEntity<PageCustom<ProductDtoResponse>> getArticles(@RequestParam(defaultValue = "0") int page,
-                                                                      @RequestParam(defaultValue = "10") int size,
-                                                                      @RequestParam(defaultValue = "ASC") Sort.Direction direction,
+    public ResponseEntity<PageCustom<ProductDtoResponse>> getArticles(@RequestParam(defaultValue = Constant.DEFAULT_PAGE) int page,
+                                                                      @RequestParam(defaultValue = Constant.DEFAULT_SIZE) int size,
+                                                                      @RequestParam(defaultValue = Constant.DEFAULT_SORT_DIRECTION) String direction,
                                                                       @RequestParam(defaultValue = "") String category,
                                                                       @RequestParam(defaultValue = "") String brand) {
         return ResponseEntity.ok(productHandler.getArticlesDto(page, size, direction, category, brand));

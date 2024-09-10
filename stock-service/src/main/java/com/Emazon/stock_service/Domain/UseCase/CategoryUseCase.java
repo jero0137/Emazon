@@ -21,7 +21,7 @@ public class CategoryUseCase implements ICategoryServicePort {
 
 
 
-    private final ICategoryPersistencePort iCategoryPersistencePort;
+    ICategoryPersistencePort iCategoryPersistencePort;
 
     public CategoryUseCase(ICategoryPersistencePort iCategoryPersistencePort) {
         this.iCategoryPersistencePort = iCategoryPersistencePort;

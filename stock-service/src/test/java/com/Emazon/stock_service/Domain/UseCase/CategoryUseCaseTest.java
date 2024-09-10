@@ -9,16 +9,19 @@ import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class CategoryUseCaseTest {
 
     @Mock
@@ -60,9 +63,13 @@ class CategoryUseCaseTest {
 
     @Test
     void shouldSaveCategorySuccessfullyWhenValid() {
-        Category newCategory = new Category(null,"Computadores","Todo lo relacionado a computadores");
+
+        Category newCategory = new Category(null, "Computadores", "Todo lo relacionado a computadores");
+
         Mockito.doNothing().when(categoryPersistencePort).saveCategory(newCategory);
+
         categoryUseCase.saveCategory(newCategory);
+
         Mockito.verify(categoryPersistencePort).saveCategory(newCategory);
     }
 
