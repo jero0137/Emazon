@@ -1,22 +1,29 @@
 package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.CategoryDto;
+import com.Emazon.stock_service.Application.Dto.CategoryDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
+import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
+import com.Emazon.stock_service.Domain.Exception.InvalidSortDirectionException;
 import com.Emazon.stock_service.Domain.Model.Category;
+import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Domain.Model.Pagination;
+import com.Emazon.stock_service.Utils.Constant;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CategoryHandler implements ICategoryHandler {
 
-    ICategoryServicePort categoryServicePort;
-    CategoryDtoMapper categoryDtoMapper;
+    private final ICategoryServicePort categoryServicePort;
+    private final CategoryDtoMapper categoryDtoMapper;
+    private final PageCustomDtoMapper pageCustomDtoMapper;
+
 
     @Override
     public void saveCategoryDto(CategoryDto categoryDto) {
@@ -29,10 +36,7 @@ public class CategoryHandler implements ICategoryHandler {
         return categoryDtoMapper.toCategoryDto(category);
     }
 
-    @Override
-    public List<CategoryDto> getAllCategoriesDto() {
-        return categoryDtoMapper.toCategoriesDto(categoryServicePort.getAllCategories());
-    }
+
 
     @Override
     public void updateCategoryDto(CategoryDto categoryDto) {
@@ -43,5 +47,15 @@ public class CategoryHandler implements ICategoryHandler {
     @Override
     public void deleteCategoryDto(Long id) {
         categoryServicePort.deleteCategory(id);
+    }
+
+    @Override
+    public PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, String direction) {
+        if (direction == null || direction.isEmpty() ||
+                (!Constant.SORT_DIRECTION_ASC.equalsIgnoreCase(direction) && !Constant.SORT_DIRECTION_DESC.equalsIgnoreCase(direction))) {
+            throw new InvalidSortDirectionException();
+        }
+        Pagination pagination = new Pagination(page, size, "name", Sort.Direction.fromString(direction.toUpperCase()));
+        return pageCustomDtoMapper.toCategoryDtoPageCustom(categoryServicePort.getCategories(pagination));
     }
 }
