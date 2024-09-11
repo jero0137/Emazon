@@ -1,5 +1,7 @@
 package com.Emazon.stock_service.Infrastructure.ExceptionHandler;
 
+import com.Emazon.stock_service.Utils.Constant;
+
 public enum ExceptionResponse {
     CATEGORY_ALREADY_EXISTS("There is already a category with that name"),
     CATEGORY_NOT_FOUND("Category not found"),
@@ -9,9 +11,9 @@ public enum ExceptionResponse {
     INVALID_SORT_DIRECTION("Invalid sort direction"),
     BRAND_ALREADY_EXISTS("There is already a brand with that name"),
     BRAND_NOT_FOUND("Brand not found"),
-
     PRODUCT_ALREADY_EXISTS("There is already a product with that name"),
-    PRODUCT_NOT_FOUND("Product not found");
+    PRODUCT_NOT_FOUND("Product not found"),
+    INVALID_CATEGORIES_PER_PRODUCT("Invalid number of categories per product");
 
     private final String message;
 

@@ -27,41 +27,27 @@ public class BrandUseCase implements IBrandServicePort {
         List<String> missingAttributes = new ArrayList<>();
 
         if(brand == null) {
-            throw new IllegalArgumentException("Brand cannot be null");
+            throw new IllegalArgumentException(Constant.BRAND_NO_NULL);
         }
         if(brand.getName() == null || brand.getName().isEmpty()) {
-            missingAttributes.add("Brand name is missing");
+            missingAttributes.add(Constant.BRAND_MUST_HAVE_NAME);
         }
         if(brand.getDescription() == null || brand.getDescription().isEmpty()) {
-            missingAttributes.add("Brand description is missing");
+            missingAttributes.add(Constant.BRAND_MUST_HAVE_DESCRIPTION);
         }
         if (!missingAttributes.isEmpty()) {
             throw new MissingAttributeException(missingAttributes.toString());
         }
         if(brand.getName().length() > 50) {
-            throw new InvalidLengthException("Brand name cannot be longer than" + Constant.MAX_BRAND_NAME_LENGTH +" characters");
+            throw new InvalidLengthException(Constant.INVALID_BRAND_NAME_LENGTH);
         }
         if(brand.getDescription().length() > 100) {
-            throw new InvalidLengthException("Brand description cannot be longer" + Constant.MAX_BRAND_DESCRIPTION_LENGTH+ " characters");
+            throw new InvalidLengthException(Constant.INVALID_BRAND_DESCRIPTION_LENGTH);
         }
         this.brandPersistencePort.saveBrand(brand);
     }
 
-    @Override
-    public Brand getBrand(Long id) {
-        return null;
-    }
 
-
-    @Override
-    public void updateBrand(Brand brand) {
-
-    }
-
-    @Override
-    public void deleteBrand(Long id) {
-
-    }
 
     @Override
     public PageCustom<Brand> getBrands(Pagination pagination) {

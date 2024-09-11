@@ -28,14 +28,20 @@ public class ProductUseCase implements IProductServicePort {
 
         List<String> missingAttributes = getStrings(product);
 
+        if(product == null){
+            throw new IllegalArgumentException(Constant.PRODUCT_NO_NULL);
+        }
         if (!missingAttributes.isEmpty()) {
             throw new MissingAttributeException(missingAttributes.toString());
         }
         if (product.getName().length() > Constant.MAX_PRODUCT_NAME_LENGTH) {
-            throw new InvalidLengthException("Article name cannot be longer than " + Constant.MAX_PRODUCT_NAME_LENGTH + " characters");
+            throw new InvalidLengthException(Constant.INVALID_PRODUCT_NAME_LENGTH);
         }
         if (product.getDescription().length() > Constant.MAX_PRODUCT_DESCRIPTION_LENGTH) {
-            throw new InvalidLengthException("Article description cannot be longer than " + Constant.MAX_PRODUCT_DESCRIPTION_LENGTH + " characters");
+            throw new InvalidLengthException(Constant.INVALID_PRODUCT_DESCRIPTION_LENGTH);
+        }
+        if(product.getCategories().size() > Constant.MAX_CATEGORIES_PER_PRODUCT || product.getCategories().isEmpty()){
+            throw new InvalidCategoriesException();
         }
         List<Category> categories = product.getCategories().stream()
                 .map(category -> categoryPersistencePort.getCategory(category.getId()))

@@ -1,12 +1,14 @@
 package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -146,5 +148,64 @@ class CategoryUseCaseTest {
         Pagination pagination = new Pagination(10, 10, "name", Sort.Direction.ASC);
         Mockito.when(categoryPersistencePort.getCategories(pagination)).thenThrow(new PageOutOfBoundsException());
         assertThrows(PageOutOfBoundsException.class, () -> categoryUseCase.getCategories(pagination));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCategoryIdIsNull() {
+        assertThrows(MissingAttributeException.class, () -> categoryUseCase.getCategory(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCategoryNotFound() {
+        Long nonExistentId = 999L;
+        Mockito.when(categoryPersistencePort.getCategory(nonExistentId)).thenReturn(null);
+        assertThrows(CategoryNotFoundException.class, () -> categoryUseCase.getCategory(nonExistentId));
+    }
+
+    @Test
+    void shouldReturnCategoryWhenIdIsValid() {
+        Category category = new Category(1L, "Computadores", "Todo lo relacionado a computadores");
+        Mockito.when(categoryPersistencePort.getCategory(1L)).thenReturn(category);
+        Category result = categoryUseCase.getCategory(1L);
+        assertEquals(category, result);
+    }
+
+    @Test
+    void shouldReturnAllCategoriesSuccessfully() {
+        List<Category> categories = List.of(
+                new Category(1L, "Books", "All kinds of books"),
+                new Category(2L, "Computers", "All about computers")
+        );
+        Mockito.when(categoryPersistencePort.getAllCategories()).thenReturn(categories);
+        List<Category> result = categoryUseCase.getAllCategories();
+        assertEquals(categories, result);
+    }
+
+    @Test
+    void shouldUpdateCategorySuccessfully() {
+        Category category = new Category(1L, "Books", "All kinds of books");
+        Mockito.doNothing().when(categoryPersistencePort).updateCategory(category);
+        categoryUseCase.updateCategory(category);
+        Mockito.verify(categoryPersistencePort).updateCategory(category);
+    }
+
+    @Test
+    void shouldDeleteCategorySuccessfully() {
+        Long categoryId = 1L;
+        Mockito.doNothing().when(categoryPersistencePort).deleteCategoryById(categoryId);
+        categoryUseCase.deleteCategory(categoryId);
+        Mockito.verify(categoryPersistencePort).deleteCategoryById(categoryId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPageIsNegative() {
+        Pagination pagination = new Pagination(-1, 10, "name", Sort.Direction.ASC);
+        assertThrows(PageOutOfBoundsException.class, () -> categoryUseCase.getCategories(pagination));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPageSizeIsZero() {
+        Pagination pagination = new Pagination(0, 0, "name", Sort.Direction.ASC);
+        assertThrows(InvalidPageSizeException.class, () -> categoryUseCase.getCategories(pagination));
     }
 }

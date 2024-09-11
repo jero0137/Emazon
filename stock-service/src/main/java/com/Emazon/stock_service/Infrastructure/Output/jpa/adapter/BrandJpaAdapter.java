@@ -40,16 +40,6 @@ public class BrandJpaAdapter implements IBrandPersistencePort {
 
 
     @Override
-    public void updateBrand(Brand brand) {
-
-    }
-
-    @Override
-    public void deleteBrand(Long id) {
-
-    }
-
-    @Override
     public PageCustom<Brand> getBrands(Pagination pagination) {
         if(pagination.getPage() < 0){
             throw new PageOutOfBoundsException();
