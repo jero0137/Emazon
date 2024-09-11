@@ -10,9 +10,12 @@ import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ProductUseCaseTest {
 
     @Mock
@@ -43,9 +47,9 @@ class ProductUseCaseTest {
         Product product = new Product(1L, "Product Name", "Description", 100, 1000000L, List.of(new Category(1L, "Category", "Description")), new Brand(1L, "Brand", "description"));
         when(categoryPersistencePort.getCategory(1L)).thenReturn(new Category(1L, "Category", "Description"));
         when(brandPersistencePort.getBrand(1L)).thenReturn(new Brand(1L, "Brand", "Description"));
-        doNothing().when(productPersistencePort).saveArticle(product);
+        Mockito.doNothing().when(productPersistencePort).saveArticle(product);
         productUseCase.saveArticle(product);
-        verify(productPersistencePort).saveArticle(product);
+        Mockito.verify(productPersistencePort).saveArticle(product);
     }
 
     @Test

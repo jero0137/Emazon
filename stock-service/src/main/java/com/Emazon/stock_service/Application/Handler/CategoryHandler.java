@@ -5,9 +5,11 @@ import com.Emazon.stock_service.Application.Dto.CategoryDtoResponse;
 import com.Emazon.stock_service.Application.Mapper.CategoryDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Domain.API.ICategoryServicePort;
+import com.Emazon.stock_service.Domain.Exception.InvalidSortDirectionException;
 import com.Emazon.stock_service.Domain.Model.Category;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Domain.Model.Pagination;
+import com.Emazon.stock_service.Utils.Constant;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -48,8 +50,12 @@ public class CategoryHandler implements ICategoryHandler {
     }
 
     @Override
-    public PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, Sort.Direction direction) {
-        Pagination pagination = new Pagination(page, size, "name", direction);
+    public PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, String direction) {
+        if (direction == null || direction.isEmpty() ||
+                (!Constant.SORT_DIRECTION_ASC.equalsIgnoreCase(direction) && !Constant.SORT_DIRECTION_DESC.equalsIgnoreCase(direction))) {
+            throw new InvalidSortDirectionException();
+        }
+        Pagination pagination = new Pagination(page, size, "name", Sort.Direction.fromString(direction.toUpperCase()));
         return pageCustomDtoMapper.toCategoryDtoPageCustom(categoryServicePort.getCategories(pagination));
     }
 }

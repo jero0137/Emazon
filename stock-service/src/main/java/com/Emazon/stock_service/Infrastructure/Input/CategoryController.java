@@ -4,6 +4,7 @@ import com.Emazon.stock_service.Application.Dto.CategoryDto;
 import com.Emazon.stock_service.Application.Dto.CategoryDtoResponse;
 import com.Emazon.stock_service.Application.Handler.ICategoryHandler;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Utils.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,9 +39,9 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Categories not found")
     })
     @GetMapping("/")
-    public PageCustom<CategoryDtoResponse> getCategories(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "10") int size,
-                                                         @RequestParam(defaultValue = "ASC") Sort.Direction direction) {
+    public PageCustom<CategoryDtoResponse> getCategories(@RequestParam(defaultValue = Constant.DEFAULT_PAGE) int page,
+                                                         @RequestParam(defaultValue = Constant.DEFAULT_SIZE) int size,
+                                                         @RequestParam(defaultValue = Constant.DEFAULT_SORT_DIRECTION) String direction) {
         return categoryHandler.getCategoriesDto(page, size, direction );
     }
 

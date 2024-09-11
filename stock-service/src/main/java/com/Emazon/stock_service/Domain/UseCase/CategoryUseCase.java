@@ -21,7 +21,7 @@ public class CategoryUseCase implements ICategoryServicePort {
 
 
 
-    private final ICategoryPersistencePort iCategoryPersistencePort;
+    ICategoryPersistencePort iCategoryPersistencePort;
 
     public CategoryUseCase(ICategoryPersistencePort iCategoryPersistencePort) {
         this.iCategoryPersistencePort = iCategoryPersistencePort;
@@ -31,20 +31,23 @@ public class CategoryUseCase implements ICategoryServicePort {
     public void saveCategory(Category category) {
         List<String> missingAttributes = new ArrayList<>();
 
+        if(category == null){
+            throw new IllegalArgumentException(Constant.CATEGORY_NO_NULL);
+        }
         if(category.getDescription().isEmpty() || category.getDescription() == null){
-            missingAttributes.add("The category must have a description");
+            missingAttributes.add(Constant.CATEGORY_MUST_HAVE_DESCRIPTION);
         }
         if(category.getName().isEmpty() || category.getName() == null){
-            missingAttributes.add("The category must have a name");
+            missingAttributes.add(Constant.CATEGORY_MUST_HAVE_NAME);
         }
         if(!missingAttributes.isEmpty()){
             throw new MissingAttributeException(missingAttributes.toString());
         }
         if(category.getName().length() > Constant.MAX_CATEGORY_NAME_LENGTH){
-            throw new InvalidLengthException("Category name must have maximum "+Constant.MAX_CATEGORY_NAME_LENGTH + "characters");
+            throw new InvalidLengthException(Constant.INVALID_CATEGORY_NAME_LENGTH);
         }
         if(category.getDescription().length() > Constant.MAX_CATEGORY_DESCRIPTION_LENGTH){
-            throw new InvalidLengthException("Category description must have maximum "+Constant.MAX_CATEGORY_DESCRIPTION_LENGTH + "characters");
+            throw new InvalidLengthException(Constant.INVALID_CATEGORY_DESCRIPTION_LENGTH);
         }
         this.iCategoryPersistencePort.saveCategory(category);
     }

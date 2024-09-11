@@ -1,6 +1,7 @@
 package com.Emazon.stock_service.Domain.UseCase;
 
 import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
+import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
 import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
 import com.Emazon.stock_service.Domain.Model.Brand;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
@@ -9,16 +10,19 @@ import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class BrandUseCaseTest {
 
     @Mock
@@ -69,7 +73,7 @@ class BrandUseCaseTest {
     }
 
     @Test
-    public void shouldSaveBrandWhenNotExists() {
+    void shouldSaveBrandWhenNotExists() {
         Brand newBrand = new Brand(null, "Haceb", "Todo lo relacionado a ollas");
         Mockito.doNothing().when(brandPersistencePort).saveBrand(newBrand);
         brandUseCase.saveBrand(newBrand);
@@ -145,6 +149,42 @@ class BrandUseCaseTest {
         assertEquals("Puma", result.getContent().get(0).getName());
         assertEquals("Nike", result.getContent().get(1).getName());
         assertEquals("Adidas", result.getContent().get(2).getName());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenBrandIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> brandUseCase.saveBrand(null));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPageIsNegative() {
+        Pagination pagination = new Pagination(-1, 10, "name", Sort.Direction.ASC);
+        assertThrows(PageOutOfBoundsException.class, () -> brandUseCase.getBrands(pagination));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPageSizeIsZero() {
+        Pagination pagination = new Pagination(0, 0, "name", Sort.Direction.ASC);
+        assertThrows(InvalidPageSizeException.class, () -> brandUseCase.getBrands(pagination));
+    }
+
+    @Test
+    void shouldReturnBrandsWhenPaginationIsValid() {
+        Pagination pagination = new Pagination(0, 10, "name", Sort.Direction.ASC);
+        List<Brand> brands = List.of(new Brand(1L, "Nike", "Sportswear"));
+        PageCustom<Brand> expectedPage = new PageCustom<>(brands, 0, 10, 1, 1);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
+    }
+
+    @Test
+    void shouldReturnEmptyPageWhenNoBrands() {
+        Pagination pagination = new Pagination(0, 10, "name", Sort.Direction.ASC);
+        PageCustom<Brand> expectedPage = new PageCustom<>(List.of(), 0, 10, 0, 0);
+        Mockito.when(brandPersistencePort.getBrands(pagination)).thenReturn(expectedPage);
+        PageCustom<Brand> result = brandUseCase.getBrands(pagination);
+        assertEquals(expectedPage, result);
     }
 
 }

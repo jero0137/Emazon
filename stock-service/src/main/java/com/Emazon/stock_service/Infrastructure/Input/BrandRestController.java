@@ -4,6 +4,7 @@ import com.Emazon.stock_service.Application.Dto.BrandDto;
 import com.Emazon.stock_service.Application.Dto.BrandDtoResponse;
 import com.Emazon.stock_service.Application.Handler.IBrandHandler;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
+import com.Emazon.stock_service.Utils.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -37,9 +38,9 @@ public class BrandRestController {
             @ApiResponse(responseCode = "404", description = "Brands not found")
     })
     @GetMapping("/")
-    public PageCustom<BrandDtoResponse> getBrands(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int size,
-                                                  @RequestParam(defaultValue = "ASC") Sort.Direction direction) {
+    public PageCustom<BrandDtoResponse> getBrands(@RequestParam(defaultValue = Constant.DEFAULT_PAGE) int page,
+                                                  @RequestParam(defaultValue = Constant.DEFAULT_SIZE) int size,
+                                                  @RequestParam(defaultValue = Constant.DEFAULT_SORT_DIRECTION) String direction) {
         return brandHandler.getBrandsDto(page, size, direction);
     }
 }

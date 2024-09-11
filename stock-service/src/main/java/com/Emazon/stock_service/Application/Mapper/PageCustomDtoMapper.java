@@ -11,10 +11,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring",
-        unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = org.mapstruct.ReportingPolicy.IGNORE,
-        uses = {CategoryDtoResponseMapper.class, BrandDtoResponseMapper.class, ProductDtoResponseMapper.class})
+@Mapper(componentModel = "spring")
 public class PageCustomDtoMapper {
 
     CategoryDtoResponseMapper CATEGORY_DTORESPONSE_MAPPER = Mappers.getMapper(CategoryDtoResponseMapper.class);

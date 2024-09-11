@@ -7,5 +7,5 @@ import org.springframework.data.domain.Sort;
 
 public interface IProductHandler {
     void saveArticleDto(ProductDto productDto);
-    PageCustom<ProductDtoResponse> getArticlesDto(int page, int size, Sort.Direction direction, String category, String brand);
+    PageCustom<ProductDtoResponse> getArticlesDto(int page, int size, String direction, String category, String brand);
 }

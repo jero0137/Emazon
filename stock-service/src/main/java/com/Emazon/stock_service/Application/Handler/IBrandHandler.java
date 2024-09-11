@@ -10,5 +10,5 @@ public interface IBrandHandler {
     void updateBrand(String name, String description);
     void deleteBrand(String name);
     void getBrand(String name);
-    PageCustom<BrandDtoResponse> getBrandsDto(int page, int size, Sort.Direction direction);
+    PageCustom<BrandDtoResponse> getBrandsDto(int page, int size, String direction);
 }

@@ -99,4 +99,11 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.PRODUCT_NOT_FOUND.getMessage()));
     }
+
+    @ExceptionHandler(InvalidCategoriesException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidCategoriesException(
+            InvalidCategoriesException invalidCategoriesException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_CATEGORIES_PER_PRODUCT.getMessage()));
+    }
 }

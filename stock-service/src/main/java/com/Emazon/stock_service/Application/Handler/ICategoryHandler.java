@@ -12,5 +12,5 @@ public interface ICategoryHandler {
 
     void updateCategoryDto(CategoryDto categoryDto);
     void deleteCategoryDto(Long id);
-    PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, Sort.Direction direction);
+    PageCustom<CategoryDtoResponse> getCategoriesDto(int page, int size, String direction);
 }
