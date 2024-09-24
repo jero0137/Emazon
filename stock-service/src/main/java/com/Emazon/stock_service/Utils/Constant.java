@@ -1,5 +1,7 @@
 package com.Emazon.stock_service.Utils;
 
+import org.hibernate.sql.ast.SqlTreeCreationException;
+
 public class Constant {
     public static final int MAX_CATEGORY_NAME_LENGTH = 50;
     public static final int MAX_CATEGORY_DESCRIPTION_LENGTH = 90;
@@ -35,5 +37,8 @@ public class Constant {
     public static final String PRODUCT_MUST_HAVE_NAME = "The product must have a name";
     public static final String PRODUCT_MUST_HAVE_DESCRIPTION = "The product must have a description";
     public static final String PRODUCT_MUST_HAVE_PRICE = "The product must have a price";
-    public static final String PRODUCT_MUST_HAVE_QUANTITY = "The product must have a quantity";
+
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_USER = "USER";
+    public static final String ROLE_AUX_BODEGA = "AUX_BODEGA";
 }

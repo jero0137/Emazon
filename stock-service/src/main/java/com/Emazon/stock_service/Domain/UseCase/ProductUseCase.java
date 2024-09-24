@@ -31,6 +31,15 @@ public class ProductUseCase implements IProductServicePort {
         if(product == null){
             throw new IllegalArgumentException(Constant.PRODUCT_NO_NULL);
         }
+        if(product.getName() == null || product.getName().isEmpty()){
+            throw new MissingAttributeException(Constant.PRODUCT_MUST_HAVE_NAME);
+        }
+        if(product.getDescription() == null || product.getDescription().isEmpty()){
+            throw new MissingAttributeException(Constant.PRODUCT_MUST_HAVE_DESCRIPTION);
+        }
+        if (product.getPrice() == null || product.getPrice() < 0) {
+            throw new MissingAttributeException(Constant.PRODUCT_MUST_HAVE_PRICE);
+        }
         if (!missingAttributes.isEmpty()) {
             throw new MissingAttributeException(missingAttributes.toString());
         }
