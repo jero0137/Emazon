@@ -106,4 +106,11 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_CATEGORIES_PER_PRODUCT.getMessage()));
     }
+
+    @ExceptionHandler(InvalidQuantitySuppliedException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidQuantitySuppliedException(
+            InvalidQuantitySuppliedException invalidQuantitySuppliedException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INVALID_QUANTITY_SUPPLIED.getMessage()));
+    }
 }

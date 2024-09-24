@@ -1,6 +1,7 @@
 package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.ProductDto;
+import com.Emazon.stock_service.Application.Dto.SupplyDto;
 import com.Emazon.stock_service.Application.Handler.ICategoryHandler;
 import com.Emazon.stock_service.Application.Handler.IProductHandler;
 import com.Emazon.stock_service.Infrastructure.Configuration.Security.JwtConfig.JwtTokenProvider;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,6 +57,24 @@ class ProductRestControllerTest {
         mockMvc.perform(post("/product/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productDto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldSupplyProductSuccessfully() throws Exception {
+        SupplyDto supplyDto = new SupplyDto(1L, 10);
+        mockMvc.perform(patch("/product/supply")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(supplyDto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenSupplyDtoIsInvalid() throws Exception {
+        SupplyDto supplyDto = new SupplyDto(1L, -10);
+        mockMvc.perform(patch("/product/supply")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(supplyDto)))
                 .andExpect(status().isBadRequest());
     }
 }
