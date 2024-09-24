@@ -8,15 +8,18 @@ import com.Emazon.stock_service.Utils.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/brand")
 @RequiredArgsConstructor
+@Validated
 public class BrandRestController {
 
     private final IBrandHandler brandHandler;
@@ -27,7 +30,7 @@ public class BrandRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping("/")
-    public ResponseEntity<Void> saveBrand(@RequestBody BrandDto brandDto) {
+    public ResponseEntity<Void> saveBrand(@Valid @RequestBody BrandDto brandDto) {
         brandHandler.saveBrandDto(brandDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

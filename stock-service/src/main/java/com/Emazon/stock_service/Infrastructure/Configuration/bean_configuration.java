@@ -12,6 +12,7 @@ import com.Emazon.stock_service.Domain.UseCase.CategoryUseCase;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.ProductJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.BrandJpaAdapter;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.adapter.CategoryJpaAdapter;
+import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.UserEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.ProductEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.BrandEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.PageEntityMapper;
@@ -22,6 +23,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.mapper.CategoryEntityMapper;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.repository.ICategoryRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -69,6 +75,23 @@ public class bean_configuration {
     @Bean
     public IProductServicePort articleServicePort(){
         return new ProductUseCase(productPersistencePort(), categoryPersistencePort(), brandPersistencePort());
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        return authProvider;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return UserEntity::new;
     }
 
 }
