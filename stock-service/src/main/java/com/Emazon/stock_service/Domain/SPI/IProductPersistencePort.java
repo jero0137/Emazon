@@ -5,7 +5,8 @@ import com.Emazon.stock_service.Domain.Model.Pagination;
 import com.Emazon.stock_service.Domain.Model.Product;
 
 public interface IProductPersistencePort {
-    void saveArticle(Product product);
+    void saveProduct(Product product);
     Product getArticle(Long id);
     PageCustom<Product> getProducts(Pagination pagination, String category, String brand);
+    void addSupply(Long productId, int quantity);
 }

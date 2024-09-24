@@ -47,9 +47,9 @@ class ProductUseCaseTest {
         Product product = new Product(1L, "Product Name", "Description", 100, 1000000L, List.of(new Category(1L, "Category", "Description")), new Brand(1L, "Brand", "description"));
         when(categoryPersistencePort.getCategory(1L)).thenReturn(new Category(1L, "Category", "Description"));
         when(brandPersistencePort.getBrand(1L)).thenReturn(new Brand(1L, "Brand", "Description"));
-        Mockito.doNothing().when(productPersistencePort).saveArticle(product);
+        Mockito.doNothing().when(productPersistencePort).saveProduct(product);
         productUseCase.saveArticle(product);
-        Mockito.verify(productPersistencePort).saveArticle(product);
+        Mockito.verify(productPersistencePort).saveProduct(product);
     }
 
     @Test

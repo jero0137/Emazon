@@ -2,6 +2,7 @@ package com.Emazon.stock_service.Infrastructure.Input;
 
 import com.Emazon.stock_service.Application.Dto.ProductDto;
 import com.Emazon.stock_service.Application.Dto.ProductDtoResponse;
+import com.Emazon.stock_service.Application.Dto.SupplyDto;
 import com.Emazon.stock_service.Application.Handler.IProductHandler;
 import com.Emazon.stock_service.Domain.Model.PageCustom;
 import com.Emazon.stock_service.Utils.Constant;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,5 +47,16 @@ public class ProductRestController {
                                                                       @RequestParam(defaultValue = "") String category,
                                                                       @RequestParam(defaultValue = "") String brand) {
         return ResponseEntity.ok(productHandler.getArticlesDto(page, size, direction, category, brand));
+    }
+
+    @Operation(summary = "Supply a product", description = "Supply a product with a certain quantity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product supplied successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
+    @PatchMapping("/supply")
+    public ResponseEntity<Void> supplyProduct(@Valid @RequestBody SupplyDto supplyDto) {
+        productHandler.supplyProduct(supplyDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

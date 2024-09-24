@@ -7,6 +7,7 @@ import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Infrastructure.Exception.BrandNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Exception.ProductAlreadyExistsException;
 import com.Emazon.stock_service.Infrastructure.Exception.CategoryNotFoundException;
+import com.Emazon.stock_service.Infrastructure.Exception.ProductNotFoundException;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.Specification.ProductSpecification;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.ProductEntity;
 import com.Emazon.stock_service.Infrastructure.Output.jpa.entity.BrandEntity;
@@ -22,7 +23,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class ProductJpaAdapter implements IProductPersistencePort {
@@ -35,7 +38,7 @@ public class ProductJpaAdapter implements IProductPersistencePort {
 
 
     @Override
-    public void saveArticle(Product product) {
+    public void saveProduct(Product product) {
         if(articleRepository.findByName(product.getName()).isPresent()){
             throw new ProductAlreadyExistsException("Ya existe un articulo con ese nombre");
         }
@@ -72,5 +75,18 @@ public class ProductJpaAdapter implements IProductPersistencePort {
         Page<ProductEntity> productEntityPage = articleRepository.findAll(spec, pageRequest);
 
         return pageEntityMapper.toProductDtoPageCustom(productEntityPage);
+    }
+
+    @Override
+    public void addSupply(Long productId, int quantity) {
+
+        if(!articleRepository.existsById(productId)){
+            throw new ProductNotFoundException();
+        }
+
+        ProductEntity productEntity = articleRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
+        productEntity.setQuantity(productEntity.getQuantity() + quantity);
+        articleRepository.save(productEntity);
+
     }
 }

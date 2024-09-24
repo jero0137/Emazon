@@ -2,6 +2,7 @@ package com.Emazon.stock_service.Application.Handler;
 
 import com.Emazon.stock_service.Application.Dto.ProductDto;
 import com.Emazon.stock_service.Application.Dto.ProductDtoResponse;
+import com.Emazon.stock_service.Application.Dto.SupplyDto;
 import com.Emazon.stock_service.Application.Mapper.PageCustomDtoMapper;
 import com.Emazon.stock_service.Application.Mapper.ProductDtoMapper;
 import com.Emazon.stock_service.Domain.API.IProductServicePort;
@@ -57,5 +58,10 @@ public class ProductHandler implements IProductHandler {
         Pagination pagination = new Pagination(page, size, "name", Sort.Direction.fromString(direction.toUpperCase()));
         return pageCustomDtoMapper.toProductDtoPageCustom(productServicePort.getProducts(pagination, category, brand));
 
+    }
+
+    @Override
+    public void supplyProduct(SupplyDto supplyDto) {
+        productServicePort.addSupply(supplyDto.getProductId(), supplyDto.getQuantity());
     }
 }
