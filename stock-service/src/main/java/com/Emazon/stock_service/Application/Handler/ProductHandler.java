@@ -61,7 +61,7 @@ public class ProductHandler implements IProductHandler {
     }
 
     @Override
-    public void supplyProduct(SupplyDto supplyDto) {
-        productServicePort.addSupply(supplyDto.getProductId(), supplyDto.getQuantity());
+    public void addProductQuantity(SupplyDto supplyDto) {
+        productServicePort.addProductQuantity(supplyDto.getProductId(), supplyDto.getQuantity());
     }
 }

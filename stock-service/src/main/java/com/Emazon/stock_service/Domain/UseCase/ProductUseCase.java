@@ -75,9 +75,9 @@ public class ProductUseCase implements IProductServicePort {
     }
 
     @Override
-    public void addSupply(Long productId, int quantity) {
+    public void addProductQuantity(Long productId, int quantity) {
 
-        articlePersistencePort.addSupply(productId, quantity);
+        articlePersistencePort.addProductQuantity(productId, quantity);
     }
 
     private static List<String> getStrings(Product product) {
