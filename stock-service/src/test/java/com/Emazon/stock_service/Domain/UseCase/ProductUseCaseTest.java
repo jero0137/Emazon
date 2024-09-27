@@ -1,9 +1,6 @@
 package com.Emazon.stock_service.Domain.UseCase;
 
-import com.Emazon.stock_service.Domain.Exception.InvalidLengthException;
-import com.Emazon.stock_service.Domain.Exception.InvalidPageSizeException;
-import com.Emazon.stock_service.Domain.Exception.MissingAttributeException;
-import com.Emazon.stock_service.Domain.Exception.PageOutOfBoundsException;
+import com.Emazon.stock_service.Domain.Exception.*;
 import com.Emazon.stock_service.Domain.Model.*;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
@@ -106,5 +103,22 @@ class ProductUseCaseTest {
 
         assertThrows(InvalidPageSizeException.class, () -> productUseCase.getProducts(pagination, "Electronics", "BrandA"));
     }
+
+    @Test
+    void shouldAddSupplySuccessfully() {
+        Long productId = 1L;
+        int quantity = 10;
+        doNothing().when(productPersistencePort).addSupply(productId, quantity);
+        productUseCase.addSupply(productId, quantity);
+        verify(productPersistencePort).addSupply(productId, quantity);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenQuantityIsNegative() {
+        Long productId = 1L;
+        int quantity = -5;
+        assertThrows(InvalidQuantitySuppliedException.class, () -> productUseCase.addSupply(productId, quantity));
+    }
+
 
 }

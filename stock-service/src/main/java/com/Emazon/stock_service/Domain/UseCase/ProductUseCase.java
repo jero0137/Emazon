@@ -76,6 +76,10 @@ public class ProductUseCase implements IProductServicePort {
 
     @Override
     public void addProductQuantity(Long productId, int quantity) {
+  
+        if(quantity < 0){
+            throw new InvalidQuantitySuppliedException();
+        }
 
         articlePersistencePort.addProductQuantity(productId, quantity);
     }
