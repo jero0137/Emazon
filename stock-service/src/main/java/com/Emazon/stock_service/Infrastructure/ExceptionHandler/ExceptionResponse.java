@@ -13,7 +13,8 @@ public enum ExceptionResponse {
     BRAND_NOT_FOUND("Brand not found"),
     PRODUCT_ALREADY_EXISTS("There is already a product with that name"),
     PRODUCT_NOT_FOUND("Product not found"),
-    INVALID_CATEGORIES_PER_PRODUCT("Invalid number of categories per product");
+    INVALID_CATEGORIES_PER_PRODUCT("Invalid number of categories per product"),
+    INVALID_QUANTITY_SUPPLIED("Invalid quantity supplied"),;
 
     private final String message;
 
