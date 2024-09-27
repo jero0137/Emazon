@@ -7,7 +7,6 @@ import com.Emazon.stock_service.Domain.SPI.IProductPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.IBrandPersistencePort;
 import com.Emazon.stock_service.Domain.SPI.ICategoryPersistencePort;
 import com.Emazon.stock_service.Utils.Constant;
-import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class ProductUseCase implements IProductServicePort {
         Brand brand = brandPersistencePort.getBrand(product.getBrand().getId());
         product.setBrand(brand);
 
-        articlePersistencePort.saveArticle(product);
+        articlePersistencePort.saveProduct(product);
     }
 
     @Override
@@ -73,6 +72,12 @@ public class ProductUseCase implements IProductServicePort {
         }
 
         return articlePersistencePort.getProducts(pagination, category, brand);
+    }
+
+    @Override
+    public void addProductQuantity(Long productId, int quantity) {
+
+        articlePersistencePort.addProductQuantity(productId, quantity);
     }
 
     private static List<String> getStrings(Product product) {

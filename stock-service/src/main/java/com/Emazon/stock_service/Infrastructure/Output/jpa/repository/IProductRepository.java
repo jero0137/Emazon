@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface IProductRepository extends JpaRepository<ProductEntity, Long>, JpaSpecificationExecutor<ProductEntity> {
     Optional<ProductEntity> findByName(String name);
-
+    boolean existsById(Long id);
 }

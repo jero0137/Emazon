@@ -32,7 +32,8 @@ public class ConfigFilter {
                         .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/category/**").hasAuthority(Constant.ROLE_ADMIN)
                         .requestMatchers(HttpMethod.POST, "/brand/**").hasAuthority(Constant.ROLE_ADMIN)
-                        .requestMatchers(HttpMethod.POST, "/product/**").hasAuthority(Constant.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/product/").hasAuthority(Constant.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.PATCH, "/product/supply").hasAuthority(Constant.ROLE_AUX_BODEGA)
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((session) -> session
