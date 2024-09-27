@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -56,7 +55,7 @@ public class ProductRestController {
     })
     @PatchMapping("/supply")
     public ResponseEntity<Void> supplyProduct(@Valid @RequestBody SupplyDto supplyDto) {
-        productHandler.supplyProduct(supplyDto);
+        productHandler.addProductQuantity(supplyDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

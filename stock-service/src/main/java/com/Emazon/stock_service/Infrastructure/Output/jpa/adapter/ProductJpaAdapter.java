@@ -78,7 +78,7 @@ public class ProductJpaAdapter implements IProductPersistencePort {
     }
 
     @Override
-    public void addSupply(Long productId, int quantity) {
+    public void addProductQuantity(Long productId, int quantity) {
 
         if(!articleRepository.existsById(productId)){
             throw new ProductNotFoundException();
